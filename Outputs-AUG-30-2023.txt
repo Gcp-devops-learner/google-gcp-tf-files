@@ -1,0 +1,207 @@
+Outputs:
+
+network_name = "shared-vpc-kamp-project"
+network_self_link = "https://www.googleapis.com/compute/v1/projects/km1-runcloud/global/networks/shared-vpc-kamp-project"
+project_id = "km1-runcloud"
+subnets = [
+  {
+    "europe-west8/milan-subnet-01" = {
+      "creation_timestamp" = "2023-08-30T02:53:49.297-07:00"
+      "description" = ""
+      "external_ipv6_prefix" = ""
+      "fingerprint" = tostring(null)
+      "gateway_address" = "10.0.0.1"
+      "id" = "projects/km1-runcloud/regions/europe-west8/subnetworks/milan-subnet-01"
+      "ip_cidr_range" = "10.0.0.0/24"
+      "ipv6_access_type" = ""
+      "ipv6_cidr_range" = ""
+      "log_config" = tolist([])
+      "name" = "milan-subnet-01"
+      "network" = "https://www.googleapis.com/compute/v1/projects/km1-runcloud/global/networks/shared-vpc-kamp-project"
+      "private_ip_google_access" = false
+      "private_ipv6_google_access" = "DISABLE_GOOGLE_ACCESS"
+      "project" = "km1-runcloud"
+      "purpose" = "PRIVATE"
+      "region" = "europe-west8"
+      "role" = ""
+      "secondary_ip_range" = tolist([])
+      "self_link" = "https://www.googleapis.com/compute/v1/projects/km1-runcloud/regions/europe-west8/subnetworks/milan-subnet-01"
+      "stack_type" = "IPV4_ONLY"
+      "timeouts" = null /* object */
+    }
+  },
+]
+subnets_self_links = [
+  "https://www.googleapis.com/compute/v1/projects/km1-runcloud/regions/europe-west8/subnetworks/milan-subnet-01",
+]
+sricharank@cloudshell:~/test-shared-vpc-0003 (km1-runcloud)$ 
+
+
+
+gcloud projects add-iam-policy-binding km1-runcloud \
+    --member serviceAccount:service-177691321556@container-engine-robot.iam.gserviceaccount.com \
+    --role roles/container.hostServiceAgentUser
+    
+gcloud beta container --project "service-project1-367504" clusters create "cluster-test" --region "europe-west8" --no-enable-basic-auth --cluster-version "1.27.3-gke.100" --release-channel "regular" --machine-type "e2-medium" --image-type "COS_CONTAINERD" --disk-type "pd-balanced" --disk-size "100" --metadata disable-legacy-endpoints=true --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --num-nodes "1" --logging=SYSTEM,WORKLOAD --monitoring=SYSTEM --enable-private-nodes --master-ipv4-cidr "172.16.0.0/28" --enable-ip-alias --network "projects/km1-runcloud/global/networks/shared-vpc-kamp-project" --subnetwork "projects/km1-runcloud/regions/europe-west8/subnetworks/milan-subnet-01" --cluster-secondary-range-name "ip-range-pods-gke-autopilot-private" --services-secondary-range-name "ip-range-service-gke-autopilot-private" --no-enable-intra-node-visibility --default-max-pods-per-node "110" --security-posture=standard --workload-vulnerability-scanning=disabled --no-enable-master-authorized-networks --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver --enable-autoupgrade --enable-autorepair --max-surge-upgrade 1 --max-unavailable-upgrade 0 --binauthz-evaluation-mode​=DISABLED --enable-managed-prometheus --enable-shielded-nodes
+
+
+sricharank-km1-runcloud-iam-gs@km1-runcloud.iam.gserviceaccount.com
+
+wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+
+
+gcloud projects add-iam-policy-binding km1-runcloud  \
+    --member=serviceAccount:service-177691321556@container-engine-robot.iam.gserviceaccount.com \
+    --role=roles/compute.securityAdmin
+   
+gcloud iam roles create ROLE_ID \
+    --title="gke_firewall_admin" \
+    --description="ROLE_DESCRIPTION" \
+    --stage=LAUNCH_STAGE \
+    --permissions=compute.networks.updatePolicy,compute.firewalls.list,\
+    compute.firewalls.get,compute.firewalls.create,\
+    compute.firewalls.update,compute.firewalls.delete \
+    --project=km1-runcloud   
+    
+    
+    gcloud projects add-iam-policy-binding gkeFirewallAdmin \
+    --member=serviceAccount:service-GKE Firewall Admin@container-engine-robot.iam.gserviceaccount.com \
+    --role=projects/gkeFirewallAdmin/roles/gkeFirewallAdmin
+gcloud iam roles create gkeFirewallAdmin \
+    --title="GKE Firewall Admin" \
+    --description="GKE service account FW permissions" \
+    --stage=BETA \
+    --permissions=compute.networks.updatePolicy,compute.firewalls.list,\
+    compute.firewalls.get,compute.firewalls.create,\
+    compute.firewalls.update,compute.firewalls.delete \
+    --project=km1-runcloud
+    
+    
+===============================
+ service-177691321556@container-engine-robot.iam.gserviceaccount.com
+ 
+ 
+ ==========================================================================
+ 
+ sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ helm template test-helm
+---
+# Source: kineton-test-helm/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: kineton-test-helm/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+---
+# Source: kineton-test-helm/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 60
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kineton-test-helm
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kineton-test-helm
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: release-name-kineton-test-helm
+      securityContext:
+        {}
+      containers:
+      containers:
+        - name: kineton-test-helm
+          securityContext:
+            {}
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1:1.16.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: kineton-test-helm/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-kineton-test-helm-test-connection"
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-kineton-test-helm:80']
+  restartPolicy: Never
+sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ 
+    
+sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ helm install finaltest-helm test-helm
+NAME: finaltest-helm
+LAST DEPLOYED: Tue Sep  5 11:44:52 2023
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=kineton-test-helm,app.kubernetes.io/instance=finaltest-helm" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ ls    
+    

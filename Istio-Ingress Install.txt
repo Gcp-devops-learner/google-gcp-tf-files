@@ -1,0 +1,15 @@
+./asmcli install   --project_id <project-id>   --cluster_name <cluster-name>   --cluster_location asia-south2-b   --fleet_id <project-id>   --output_dir <>   --enable_all   --ca mesh_ca --option legacy-default-ingressgateway
+
+
+kubectl create ns <your namespace>
+1
+kubectl label namespace <your namespace> istio-injection=enabled
+
+deploy the application in that namespace
+Confirm that all the pods are started and have sidecars deployed with them.
+
+https://cloud.google.com/service-mesh/docs/deploy-bookinfo#managed
+
+https://cloud.google.com/service-mesh/docs/private-cluster-open-port
+
+https://cloud.google.com/service-mesh/docs/uninstall

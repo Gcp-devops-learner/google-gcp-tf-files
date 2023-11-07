@@ -1,0 +1,75 @@
+We've built the docker image from the docker file and code as is and pushed the docker image into the Artifact Registry.
+
+ create the Deployment , Services and Ingress files and deployed the same in the Dev environment under Autopilot GKE Private Cluster with No Authorized Networks as such for Dev.
+ 
+  look into the backend services issue and configuration of Pub/Sub Topic.
+  
+  TOC team had demonstrated how to configure a Traffic/ RPS based Horizontal Pod Autoscaler for the Application via Gateway API instead of Ingress.
+- TOC team will try to replicate the "Handshake Failure" error in their Environment, and meanwhile Kineton team will provide access to the TOC team in its Development Environment so that they can have a look at the error.
+- Kineton team to do the Load-testing of the application once the HPA gets deployed.
+
+c. To increase the number of node pools so that the application can take the required load
+
+Kineton team to come back on the loading metric e.g. how many requests per second can we assume for our test case and the possible metric can be CPU loading or Memory footprint?
+
+The workload is successfully exposed via a GKE gateway on an autopilot cluster in a shared vpc
+
+The cluster should be able to take the load upto 10000 messages per second
+
+Prewarming the autopilot cluster
+
+Configure the load capacity to be ~ 10K messages
+
+Set up static IP for GKE Gateway
+
+
+========================================
+Issue - We were not able to generate a load of more than 3000 requests per second even after hitting the cluster with 10,000 users. The use case is to generate 10K requests per second
+
+Resolution 
+Increase the pod range from current /22 to /17. This will give us a sufficient number of IPs and then the pods will be able to scale up to more than 10,000. We can optimize this and accordingly arrive at the right CIDR range for the pods
+In the load testing tool (locust e.g. in our case) - increase the number of workers to lets say 50 and then it will be able to generate this much load
+I made these changes in the Kineton environment and was able to test it with 0% failures and 10k requests per second. Please see the graph attached.
+
+
+Issue- The cluster was taking more than half an hour to stabilize
+
+Resolution
+With the above arrangement, it is now taking around 10 minutes to achieve the state of equilibrium
+However, we can also prewarm the cluster and reserve some capacity through cron jobs at certain time intervals and reduce the stabilization time. Please see the link - https://cloud.google.com/kubernetes-engine/docs/how-to/capacity-provisioning#considerations
+
+
+Issue- What does failure really stand for? Does it mean that the messages are dropped for good or will they be still in queue and can be processed later. 
+
+Resolution - Work in progres
+
+
+
+-======================================================
+
+Please see the minutes of the meeting as below:
+
+Successfully demonstrated the load testing of the application with ~ 12k RPS with a success rate of ~ 99.99%
+
+The HPA was started with min no of replicas as 50 and max as 100 before the load testing which provisioned the resources already for the upcoming load
+
+Since we know the time when we will hit the peak load already which is 8 AM CET, 12 noon CET and 4 PM CET, we can kick in the HPA before hand and thus can keep the pods pre-ready for accepting the upcoming load
+
+Another way this can be done is through the capacity reservation. This is beneficial when we don't know the peak timing and hence have to reserve the capacity with lower priority workloads. The sample code for the same available here.
+
+It consists of a cronjob which will reserve the capacity at a particular time and then priority classes to define the workloads. The production workload will preempt the lower priority workloads and hence can help in rapid autoscaling of the pods. Please refer to the link for more details.
+
+Action items for next week:
+Cloud scheduler for starting min pods as 50 at 8 AM CET, 12 noon CET and 4 PM CET. At other times the min replicas should come down to zero
+To check if we can replace GKE gateway with ingress and get better results.
+Closure of the engagement on 1-Sep
+
+
+====================================
+  allow = [{
+      protocol = "tcp"
+      ports    = ["22"]
+    }]
+    other = {
+    protocol = "icmp"
+  }

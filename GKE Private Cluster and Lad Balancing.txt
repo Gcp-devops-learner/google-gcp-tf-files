@@ -1,0 +1,78 @@
+Google Cloud Load Balancer (HTTP(S) Load Balancing) Demo (Part 1):
+
+https://www.youtube.com/watch?v=4ieCDLEFBqE&list=PLUbxET94Z4ZVgN-NUZyaH04KhzIMnyqcm&index=49
+
+Google Cloud Load Balancer (HTTP(S) Load Balancing) Demo (Part 2) ;
+
+https://www.youtube.com/watch?v=Bq4h_CtrNMU&list=PLUbxET94Z4ZVgN-NUZyaH04KhzIMnyqcm&index=48
+
+
+
+Deploying Public & Private Nginx Ingress Controllers with HTTP(S) Loadbalancer in GKE:
+
+https://blog.thecloudside.com/deploying-public-private-nginx-ingress-controllers-with-http-s-loadbalancer-in-gke-dcf894197fb7
+
+=================================================================================
+https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#console_3
+
+https://cloud.google.com/kubernetes-engine/docs/tutorials/private-cluster-bastion
+
+https://cloud.google.com/nat/docs/gke-example
+
+
+
+
+==================================================================================
+
+https://medium.com/@glen.yu/nginx-ingress-or-gke-ingress-d87dd9db504c
+
+
+Ongoing Projects:
+TrulyMadly
+WNS
+Kineton
+
+"Ongoing Projects:
+Enboarder
+TrulyMadly"
+
+
+========================================================================================================
+
+step1) Create a public GKe:
+
+Step2) https://cloud.google.com/service-mesh/docs/unified-install/install-dependent-tools#install_required_tools
+
+sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+
+step3) https://cloud.google.com/service-mesh/docs/unified-install/install-anthos-service-mesh
+
+step4) https://thenewstack.io/using-traefik-ingress-controller-with-istio-service-mesh/
+
+
+=========================================================================================================
+https://cloud.google.com/service-mesh/docs/unified-install/install-dependent-tools
+
+https://cloud.google.com/service-mesh/docs/unified-install/install-anthos-service-mesh
+
+https://cloud.google.com/service-mesh/docs/unified-install/anthos-service-mesh-prerequisites
+
+https://cloud.google.com/service-mesh/docs/unified-install/install-dependent-tools#install_required_tools
+
+https://cloud.google.com/nat/docs/gke-example
+
+===========================================================================================================
+https://cloud.google.com/armor/docs/waf-rules
+https://cloud.google.com/armor/docs/rule-tuning
+
+
+https://cloud.google.com/kubernetes-engine/docs/tutorials/configuring-domain-name-static-ip#:~:text=Use%20the%20annotation%20kubernetes.io,along%20with%20the%20required%20annotations.
+Use the annotation kubernetes.io/ingress.global-static-ip-name to specify a global IP address.
+example -  kubernetes.io/ingress.global-static-ip-name: helloweb-ip
+
+
+===========================================================================================================
+https://cloud.google.com/service-mesh/docs/private-cluster-open-port
+https://cloud.google.com/service-mesh/docs/unified-install/install-anthos-service-mesh
+
+https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-multi-ssl#secrets

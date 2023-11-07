@@ -1,0 +1,22 @@
+1) Creation of project
+2) Creation of VPC Nw, subnet, Firewall
+3) converting project into Host Project for shared Vpc and association with services project
+4) creation of IAM binding rules with proper permissions to two service accounts in shared vpc.
+5) Creation of Auto pilot private gke cluster 
+
+
+roles/compute.osLoginExternalUser
+
+
+variables.auto.tfvars.json.txt :
+
+{ 
+    "project_id": "km1-runcloud",
+    "region": "europe-west8",
+    "environment_prefix": "dev",
+    "registry_config": {
+        "tf-template-docker": {
+            "format": "DOCKER"
+        }
+    }
+}

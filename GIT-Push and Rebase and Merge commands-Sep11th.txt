@@ -1,0 +1,53 @@
+ git clone ssh://sricharank@google.com@source.developers.google.com:2022/p/service-project-1-non-prod/r/Kineton
+ 1837  ls
+ 1838  cd Kineton/
+ 1839  ls
+ 1840  git status
+ 1841  git branch
+ 1842  ls
+ 1843  git checkout main
+ 1844  ls
+ 1845  git checkout master
+ 1846  git merge main 
+ 1847  git rebase main
+ 1848  ls
+ 1849  cd test-helm/
+ 1850  ls
+ 1851  cd ..
+ 1852  git status
+ 1853  git pull
+ 1854  git push
+ 1855  git push --all goole
+ 1856  git push --all google
+ 1857  git push --all 
+ 1858  git status
+ 1859  git pull
+ 1860  git config pull.rebase false
+ 1861  git status
+ 1862  ls
+ 1863  git branch
+ 1864  git rebase origin/master
+ 1865  git status
+ 1866  git push
+ 1867  git branch
+ 1868  git branch -d main 
+ 1869  git branch
+ 1870  ls
+ 1871  cd kineton-helm/
+ 1872  ls
+ 1873  ls -
+ 1874  ls -a
+ 1875  cd ..
+ 1876  git branch
+ 1877  git push --all
+ 1878  git push origin --delete main
+ 1879  ls
+ 1880  git branch
+ 1881  git status
+ 1882  rm -rf kineton-helm/
+ 1883  ls
+ 1884  git status
+ 1885  git add .
+ 1886  git commit -m "deleted empty folder"
+ 1887  git push --all
+ 1888  history

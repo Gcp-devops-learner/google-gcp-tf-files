@@ -1,0 +1,82 @@
+1) Provision a GCP network.
+
+gcloud compute --project=km1-runcloud \
+networks create gcp-network --subnet-mode=custom
+
+
+2) Provision a GCP subnet with primary and secondary cidr range for frontend GKE cluster. 
+
+gcloud compute --project=km1-runcloud \
+networks subnets create gke-frontend-subnet-01 \
+--network=gcp-network \
+--region=us-central1 --range=19.188.160.0/24 \
+--secondary-range=gke-frontend-pod-address-range-01=19.188.128.0/24,gke-frontend-service-address-range-01=19.188.31.0/28 \
+--enable-private-ip-google-access
+
+3) Provision a GCP subnet with primary and secondary cidr range for backend GKE cluster. 
+
+gcloud compute --project=km1-runcloud  \
+networks subnets create gke-backend-subnet-02 \
+--network=gcp-network \
+--region=us-east1 --range=19.188.176.0/23 \
+--secondary-range=gke-backend-pod-address-range-02=19.188.31.96/28,gke-backend-service-address-range-02=19.188.63.96/28 \
+--enable-private-ip-google-access
+
+4) GKE clusters
+Provision a GKE cluster for frontend application.
+
+gcloud container --project "km1-runcloud" \
+clusters create "gke-frontend-cluster" \
+--region "us-central1" \
+--no-enable-basic-auth \
+--cluster-version "1.26.2-gke.1000" \
+--machine-type "n2-standard-4" \
+--image-type "COS_CONTAINERD" \
+--disk-type "pd-standard" --disk-size "30" \
+--node-labels group="test-node",name="gke-cluster-01" \
+--metadata disable-legacy-endpoints=true \
+--scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
+--num-nodes "1" \
+--enable-stackdriver-kubernetes \
+--enable-ip-alias \
+--network "projects/km1-runcloud/global/networks/gcp-network" \
+--subnetwork "projects/km1-runcloud/regions/us-central1/subnetworks/gke-frontend-subnet-01" \
+--cluster-secondary-range-name "gke-frontend-pod-address-range-01" \
+--services-secondary-range-name "gke-frontend-service-address-range-01" \
+--default-max-pods-per-node "110" \
+--enable-master-authorized-networks --master-authorized-networks "19.188.4.0/24" \
+--addons HorizontalPodAutoscaling,HttpLoadBalancing \
+--enable-autoupgrade \
+--enable-autorepair \
+--labels group="test-group-01",name="gke-frontend-cluster"
+
+
+
+5) Provision a GKE cluster for backend application.
+
+gcloud container --project "km1-runcloud" \
+clusters create "gke-backend-cluster" \
+--region "us-east1" \
+--no-enable-basic-auth \
+--cluster-version "1.26.2-gke.1000"  \
+--machine-type "n2-standard-2" \
+--image-type "COS_CONTAINERD" \
+--disk-type "pd-standard" --disk-size "50" \
+--node-labels group="test-node-02",name="gke-backend-cluster"  \
+--metadata disable-legacy-endpoints=true \
+--scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
+--num-nodes "3" \
+--enable-stackdriver-kubernetes \
+--enable-ip-alias \
+--network "projects/km1-runcloud/global/networks/gcp-network" \
+--subnetwork "projects/km1-runcloud/regions/us-east1/subnetworks/gke-backend-subnet-02" \
+--cluster-secondary-range-name "gke-backend-pod-address-range-02" \
+--services-secondary-range-name "gke-backend-service-address-range-02" \
+--default-max-pods-per-node "110" \
+--enable-master-authorized-networks --master-authorized-networks "19.188.12.0/24" \
+--addons HorizontalPodAutoscaling,HttpLoadBalancing \
+--enable-autoupgrade \
+--enable-autorepair \
+--labels group="test-group-02",name="gke-backend-cluster"
+
+

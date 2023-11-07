@@ -1,0 +1,241 @@
+annotation: 
+   networking.gke.io/max-rate-per-endpoint: "10"
+   
+   
+apiVersion: v1
+kind: Service
+metadata:
+  name: kampk
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: "10"
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http 
+  selector:
+    app: kampk
+  type: ClusterIP   
+
+
+---
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: kampk
+  annotations:
+    networking.gke.io/certmap: cert-map
+spec:
+  gatewayClassName: gke-l7-gxlb
+  listeners:
+  - name: https
+    protocol: HTTPS
+    port: 443
+
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: kampk
+  labels:
+    gateway: kampk
+spec:
+  parentRefs:
+  - name: kampk
+  rules:
+  - backendRefs:
+    - name: kampk
+      port: 80
+      
+      
+      
+      
+      
+      
+====================================================
+   gcloud certificate-manager maps create store-example-com-map
+   
+   gcloud certificate-manager certificates create store-example-com-cert \
+    --certificate-file="cert.pem" \
+    --private-key-file="PRIVATE_KEY_FILE"
+    
+    
+    gcloud certificate-manager maps entries create store-example-com-map-entry \
+    --map=store-example-com-map \
+    --hostname=store.example.com \
+    --certificates=store-example-com-cert
+    
+ apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kampk
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kampk
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Object
+    object:
+      describedObject:
+        kind: Service
+        name: kampk
+      metric:
+        name: "autoscaling.googleapis.com|gclb-capacity-utilization"
+      target:
+        averageValue: 70
+        type: AverageValue   
+        
+        
+curl -k https://<IP>
+
+curl --cacert <your cert file name>.cert  https://<ip>
+
+
+=======================================================
+
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: kampk-healthcheck
+spec:
+  default:
+    checkIntervalSec: 15
+    timeoutSec: 15
+    healthyThreshold: 3
+    unhealthyThreshold: 2
+    logConfig:
+      enabled: true
+    config:
+      type: HTTP
+      httpHealthCheck:
+        portSpecification: 
+        port: 80
+        requestPath: /health
+  targetRef:
+    group: ""
+    kind: Service
+    name: kampk
+    
+ =================================================================
+ 2nd Aug23: 
+ 
+deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamp
+  # namespace: "default"
+  labels:
+    app: "kamp"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kamp
+  template:
+    metadata:
+      labels:
+        app: kamp
+    spec:
+      containers:
+        - name: kamp
+          image: asia-south2-docker.pkg.dev/vertex-ai-392810/kamp-repo/kamp:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+
+
+service.yaml:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamp
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: "10"  
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http 
+  selector:
+    app: kamp
+  type: ClusterIP
+Prashant Agarwal6:57 PM
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamp
+  annotations:
+    networking.gke.io/max-rate-per-endpoint: "10"  
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http 
+  selector:
+    app: kamp
+  type: ClusterIP
+  
+  
+
+cat gateway-kaml.yaml 
+
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: kamp
+spec:
+  gatewayClassName: gke-l7-gxlb
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+http-route.yaml
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: kamp
+  labels:
+    gateway: kamp
+spec:
+  parentRefs:
+  - name: kamp
+  rules:
+  - backendRefs:
+    - name: kamp
+      port: 80
+      
+--------------------------------------------------------------
+      apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kamp
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kamp
+  minReplicas: 1
+  maxReplicas: 10000
+  metrics:
+  - type: Object
+    object:
+      describedObject:
+        kind: Service
+        name: kamp
+      metric:
+        name: "autoscaling.googleapis.com|gclb-capacity-utilization"
+      target:
+        averageValue: 70
+        type: AverageValue
+this is for hpa.yaml
+
+
+===================================================================================
+
+1 customer 36.000 calls in 1 minute
+      

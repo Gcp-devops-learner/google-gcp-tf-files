@@ -1,0 +1,15 @@
+Upgrading Terraform Command Line To The Latest Version
+
+
+
+terraform version
+
+ curl -O https://releases.hashicorp.com/terraform/0.15.3/terraform_0.15.3_linux_amd64.zip
+ 
+ sudo mv /usr/bin/terraform /usr/bin/terraform.12
+ 
+ sudo unzip terraform_0.15.3_linux_amd64.zip -d /usr/bin/
+ 
+ terraform version
+ 
+ https://eclipsys.ca/upgrading-terraform-command-line-to-the-latest-version/

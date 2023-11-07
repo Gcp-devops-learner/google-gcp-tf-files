@@ -1,0 +1,36 @@
+nats:
+  jetstream:
+    enabled: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 200m
+      memory: 200Mi
+
+natsbox:
+  enabled: false
+
+cluster:
+  enabled: true
+  name: "sophia-nats"
+  replicas: 3
+
+exporter:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: devops
+
+auth:
+ enabled: true
+ timeout: "5s"
+ fileStorage:
+   enabled: true
+ resolver:
+   type: full
+   store:
+     dir: "/data/nats-config/accounts/jwt"
+     size: "1Gi"

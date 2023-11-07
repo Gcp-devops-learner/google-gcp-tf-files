@@ -1,0 +1,90 @@
+https://source.cloud.google.com/cloud-foundation/cft-openx-staging/+/master:terraform-module-ox-jenkins/jenkins.tf
+
+
+
+https://source.cloud.google.com/source-repositories-cdk/mrc-source-share/+/main:main.tf
+
+https://source.cloud.google.com/rnm-shared-devops/terraform-example-organization/+/master:network/main.tf
+
+
+https://source.cloud.google.com/cloud-professional-services/boeing-cloudaccesspoint/+/master:terraform-projects-bootstrap/gcs-backend-creation.tf
+
+https://source.cloud.google.com/cloud-professional-services/amex-service-enablement/+/samplecode:cloudsql/modules/postgresql/variables.tf
+
+https://source.cloud.google.com/amex-foundation-project/amex-foundation-repo/+/master:foundation/1-org-structure/project.tf;bpv=0;bpt=0
+
+
+https://source.cloud.google.com/cloud-professional-services/amex-foundations/+/master:foundation/0-bootstrap/main.tf;bpv=0;bpt=0
+
+https://source.cloud.google.com/rnm-shared-devops/terraform-example-organization/+/master:init.sh
+
+
+dev-proj-params-project-1-team-a = {
+
+  description          = "dev-project-1-team-a" 
+  environment          = "d"
+  unique_id            = "1"
+
+}
+
+dev-proj-params-project-2-team-a = {
+
+  description          = "dev-project-2-team-a"
+  environment          = "d"
+  unique_id            = ""
+
+}
+
+prod-proj-params-project-1-team-a = {
+
+  description          = "prod-project-1-team-a"
+  environment          = "p"
+  unique_id            = ""
+
+}
+
+prod-proj-params-project-2-team-a = {
+
+  description          = "prod-project-2-team-a"
+  environment          = "p"
+  unique_id            = ""
+
+}
+
+dev-proj-params-project-1-team-b = {
+
+  description          = "dev-project-1-team-b"
+  environment          = "d"
+  unique_id            = ""
+
+}
+
+dev-proj-params-project-2-team-b = {
+
+  description          = "dev-project-2-team-b"
+  environment          = "d"
+  unique_id            = ""
+
+}
+
+prod-proj-params-project-1-team-b = {
+
+  description          = "prod-project-1-team-b"
+  environment          = "p"
+  unique_id            = ""
+
+}
+
+prod-proj-params-project-2-team-b = {
+
+  description          = "prod-project-2-team-b"
+  environment          = "p"
+  unique_id            = ""
+
+}
+
+
+
+
+
+

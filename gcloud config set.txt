@@ -1,0 +1,1252 @@
+gcloud config set project amex-foundation-project
+
+gcloud auth application-default login
+
+Cloud DNS offers both public zones and private managed DNS zones. A public zone is visible to the public internet, while a private zone is visible only from one or more Virtual Private Cloud (VPC) networks that you specify. For detailed information about zones
+
+https://cloud.google.com/sql/docs/postgres/connect-instance-kubernetes
+https://github.com/GoogleCloudPlatform/gke-networking-recipes/blob/main/ingress/single-cluster/ingress-https/README.md
+
+https://cloud.google.com/load-balancing/docs/dns-names
+
+https://cloud.google.com/iap/docs/enabling-kubernetes-howto
+
+https://github.com/terraform-google-modules/terraform-example-foundation/
+
+https://cloud.google.com/docs/terraform/blueprints/terraform-blueprints
+
+https://cloud.google.com/kubernetes-engine/docs/concepts/ingress
+9454935307-Aupam
+
+prashant1@prashant.joonix.net
+
+
+backend1.sricharank.in
+
+backend2.sricharank.in
+
+Docker Artifactory images:
+========================    us-west1
+docker pull nginx
+
+docker tag alpine  europe-west8-docker.pkg.dev/km1-runcloud/charan-nginx/new-alpine:v2
+docker tag nginx  us-east1-docker.pkg.dev/km1-runcloud/isazi-nginx-us-east/new-nginx:v4 
+docker push us-east1-docker.pkg.dev/km1-runcloud/isazi-nginx-us-east/new-nginx:v4
+docker pull us-east1-docker.pkg.dev/km1-runcloud/isazi-nginx-us-east/new-nginx:v4
+
+docker push europe-west8-docker.pkg.dev/km1-runcloud/charan-alpine/new-alpine:v2
+
+docker pull europe-west8-docker.pkg.dev/km1-runcloud/charan-alpine/new-alpine:v2
+
+
+kubectl get events --sort-by=.metadata.creationTimestamp
+
+kubectl create job --from=cronjob/scale-up-job scale-up-job-001
+
+kubectl logs scale-up-job-002-ms4sj --all-containers 
+
+docker build -t gcr.io/km1-runcloud/nginx:v2 .
+
+docker push gcr.io/km1-runcloud/nginx:v2 .
+
+terraform init -migrate-state
+
+sudo wget https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
+
+https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip
+
+unzip terraform_1.5.7_linux_amd64.zip
+
+sudo unzip terraform_1.5.7_linux_amd64.zip -d /usr/local/bin
+ls -l /usr/local/bin
+terraform -version
+
+sudo apt-get remove code
+https://phoenixnap.com/kb/how-to-install-terraform#ftoc-heading-6
+
+MD5 Authentication(oQw5e6S0IQDA02Aev+YRVy74d5vmpTAw)
+
+
+https://admintuts.net/server-admin/provision-kubernetes-clusters-in-gcp-with-terraform/
+https://antonputra.com/google/create-gke-cluster-using-terraform/#create-subnet-in-gcp-using-terraform
+
+org-token new:
+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(new-github-token-09)oct9th
+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(new-github-token-08)Aug16th
+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(new-github-token-06)Aug10th
+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(new-github-token04)july11th. 
+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(june27th)
+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
+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
+
+ongoing Projects: Truly Madly, Kineton, WNS
+
+ongoing projects(sep8): WNS, ODFL(Old Dominion Freight Line Inc), Khelomore
+
+ongoing projects(sep8): Isazi Consulting, ODFL(Old Dominion Freight Line Inc), Khelomore, Arizona drinks
+
+ongoing projects(sep22): Isazi Consulting, Khelomore, Arizona drinks
+
+GCP Cloud Network Engineer
+"Ongoing Projects 
+1. Isazi Consulting(GKE Workload Migration) 
+2. ODFL(Cloud Foundations) 
+3. Arizona drinks(VPN, GCVE)"
+
+ARIZONA BEVERAGES USA LLC
+ONE ARIZONA PLAZA | SUITES 400 | WOODBURY NY 11797
+DRINKARIZONA.COM
+
+==============================================================================
+A bastion host is an instance that is provisioned with a public IP address and can be accessed via SSH. Once set up, the bastion host acts as a jump server, allowing secure connection to instances provisioned without a public IP address.
+
+To reduce exposure of servers within the VPC, you will create and use a bastion host. Administrative tasks on the individual servers are going to be performed using SSH, proxied through the bastion. Access to the servers and regular internet access from the servers, e.g., for software installation, will only be allowed with a special maintenance security group attached to those servers.
+
+=====================================================================================
+
+#! /bin/bash
+apt-get update
+apt-get install -y nginx
+service nginx start
+sed -i -- 's/nginx/Google Cloud Platform - '"$HOSTNAME"'/' /var/www/html/index.nginx-debian.html
+
+
+
+gcloud builds submit -t gcr.io/km1-runcloud/quiz-frontend ./frontend/
+
+SOURCE: gs://km1-runcloud_cloudbuild/source/1685271540.79438-3037e3e27125465f93d8f391c040b46c.tgz
+IMAGES: gcr.io/km1-runcloud/quiz-frontend
+
+gcloud builds submit -t gcr.io/km1-runcloud/quiz-backend ./backend/
+SOURCE: gs://km1-runcloud_cloudbuild/source/1685271643.380261-96497ccd89474374b469ba1d577ecd23.tgz
+IMAGES: gcr.io/km1-runcloud/quiz-backend
+
+gcloud artifacts repositories create hello-repo \
+    --project=km1-runcloud \
+    --repository-format=docker \
+    --location=us-central1 \
+    --description="Docker repository"   
+    us-central1-docker.pkg.dev/km1-runcloud/hello-repo/helloworld-gke
+    
+    
+    gcloud builds submit \
+  --tag us-central1-docker.pkg.dev/km1-runcloud/hello-repo/helloworld-gke .
+
+
+#   private_visibility_config_networks = [
+#      //  module.dns-vpc-module.network_name
+#     # //"https://www.googleapis.com/compute/v1/projects/formlabs-377008/global/networks/test-network"
+#      "projects/formlabs-377008/global/networks/test-network"
+#   ]
+
+
+https://cloud.google.com/blog/products/containers-kubernetes/connect-gateway-with-argocd
+https://blog.searce.com/multi-cloud-private-dns-forwarding-part-ii-54bb0ec5fbea
+
+Ongoing Projects:
+Ripic Technology
+Unicloud
+Lentra softsell
+Enboarder
+TrulyMadly 
+
+
+GKE- LOAD-Balancer:
+https://source.cloud.google.com/victoramador-test/gke1-session/+/master:loadbalancer.yaml
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7KI2gVHd+BzRDgfRflIanlBcwrGtBR35JjOg7XwkDWjslY2TzzdMtGB/A7ycbAwmU/EGIRrGse6RKk1YCrSIP9VNhjdDODX816fTnqcNWGjWUJhCDfZxoiiOdnCYKQCx8tbMuD9bobdQWgE+2X2IRg+QE9oAeYfAURRx/l/KiQWYzzP0PR6lszcXvJjTSlSpfyh0t1VMk7+O6etbxskP27KLWkA1KqsjH1QbpPeU235JXnfxpo+97sCq5J4zrqb21bIJJoRcd7mW9mrIq7R8LLeubVHmJ2uKXq8IyJLrS8YVoxAN0KzeneKvyxFMnAaG8SOXAbc0WJW2NOY6yObwocci6UOJ1MglAvyKkrAfksdjVIEt93BZlJ6WQy3RIn10gg5mORAWqh3IAsl7yLhZxmrg7UMYeRPnkGoQoDtEqV/qNQrkpq72lqlTVG+1DYWkXho4gDRFk5C+C/97wt6gH19l0bxehc8eAT0JKmJsBLngs0PUjiOVV3vyXOqmaSCU= sricharank@google.com
+
+OAuth client created
+The client ID and secret can always be accessed from Credentials in APIs & Services
+
+OAuth access is restricted to the test users listed on your OAuth consent screen
+Client ID
+177533249434-oeirfco4mup0016ugi3h64oiscg1u663.apps.googleusercontent.com
+Client secret
+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
+Creation date
+February 14, 2023 at 2:27:00 PM GMT+5
+Status
+ Enabled
+ 
+ # GCP SUBZONE
+
+resource "google_dns_managed_zone" "gcp_sub_zone" {
+  count = var.create_gcp_dns_zone ? 1 : 0
+  name              = "${var.namespace}-zone"
+  dns_name          = "${var.namespace}.gcp.${var.hosted-zone}."
+  project           = var.gcp_project
+  description       = "Managed by Terraform, Delegated Sub Zone for GCP for  ${var.namespace}"
+  labels = {
+    name = var.namespace
+    owner = var.owner
+    created-by = var.created-by
+  }
+}
+
+
+Org-Policy:
+https://cloud.google.com/resource-manager/docs/organization-policy/org-policy-constraints
+
+https://gcpdraw googleplex
+
+https://cloud.google.com/architecture/identity/federating-gcp-with-azure-ad-configuring-provisioning-and-single-sign-on#no-group-mapping
+
+https://docs.google.com/spreadsheets/d/1581yT2CX060IP9FwuyFkLRpBjKCU-32yf3DnnLeA6Vs/edit?resourcekey=0-zixChxmTbYKwG4LaBa3pLg#gid=0
+
+vpn-secret-key: hwJmlImuVaz7gUKTZq6+l8CvCaFRMrz+
+
+You can create and use multiple host projects; however, each service project can only be attached to a single host project.
+
+gcloud console:
+
+https://pantheon.corp.google.com/home/dashboard?cloudshell=false&orgonly=true&project=amex-foundation-project&supportedpurview=project&pli=1&rapt=AEjHL4M3huWTHtXO-awbTxJV7zy5L2pnLQua7JfaNxHkTAAk1eiLeuDM1YMLOw4pbpL42Ex9G1iC_1Iv9EqO3jtaEbEV96QcHQ
+
+https://pantheon.corp.google.com/run?cloudshell=false&orgonly=true&project=amex-foundation-project&supportedpurview=project&pli=1&rapt=AEjHL4MH9B37AmD2FA20vr5fuPzGpJn9NPzHsJDWl4M9o37OGWzvIHVZZPM-2wKAsbXb-mf2F_QJdnW4N3XPsrw1WZoyuTISfw
+
+Cloud Source REPO:
+https://source.cloud.google.com/amex-foundation-project/amex-foundation-repo/+/master:iam/iam.tf
+
+(Modules:
+Terraform modules and configurations, as it follows different patterns and conventions from testing application code. While testing application code primarily involves testing the business logic of applications themselves, fully testing infrastructure code requires deploying real cloud resources to minimize the risk of production failures )
+
+======================================================================================================================
+
+sudo apt-get update -y
+  sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
+  sudo apt-get install -y kubectl
+  sudo apt-get install -y tinyproxy
+  
+VPC service control:
+VPC Service Controls provides an additional layer of security defense for Google Cloud services that is independent of Identity and Access Management (IAM). While IAM enables granular identity-based access control, VPC Service Controls enables broader context-based perimeter security, including controlling data egress across the perimeter. 
+
+Note: Any account with access to the perimeter can still access the restricted services. It is absolutely required to use both VPC Service Controls and IAM for defense in depth.
+6.3.3.1 Perimeter bridge
+While a project can be assigned to only one service perimeter, you may want your project to be able to communicate with projects in another perimeter. You can enable communication to services and share data across service perimeters by creating a perimeter bridge.
+
+A perimeter bridge allows projects in different security perimeters to communicate. Perimeter bridges are bidirectional, allowing projects from each service perimeter equal access within the scope of the bridge. However, the access levels and service restrictions of the project are controlled solely by the service perimeter that the project belongs to. A project can have multiple bridges connecting it to other projects.
+
+A project from one service perimeter cannot indirectly gain access to projects in other perimeters. For example, assume we have three projects: A, B, and C. Each project belongs to a different service perimeter. A and B share a perimeter bridge. B and C also share a bridge. While data can move between A and B, as well as between B and C, nothing can pass between A and C because the two projects are not directly connected by a perimeter bridge.
+
+A project must belong to a service perimeter before it can be connected to another project using a perimeter bridge.
+========================================================================================================================
+
+For any process/delivery related queries please reach out dc-deliveryexcellence@google.com 
+For partner Ops reach out to : gdc-partner-ops@google.com 
+Project related question reach out to project SPOC
+
+https://docs.google.com/document/d/1eyfth9vloSlvtZCvpC1xmldayM6yDVA4CxiAMI31xfQ/edit#heading=h.aoa8kepl6u6t
+
+https://github.aexp.com/amex-eng/terraform-google-data-flow/tree/feature/terraform-google-dataflow
+
+https://tfe.aexp.com/app/aexp/workspaces/AIM600001687_l-hcf-cloudsql/runs/run-7Wv8PYnVW8mDvJkb
+
+Activation Policy of a 2nd Generation Cloud SQL instance is normally set to “ALWAYS” upon being started from a stopped state or upon creation
+
+ Its a pod with two projects where iam assigned to. The pods are Cognizant and PriceChopper
+
+amex-eng/AIM600001046_tfe_gcp_dcne_nonprod_network
+
+https://source.cloud.google.com/cloud-professional-services/amex-foundations
+
+members      = ["group:dc-amex-foundations@google.com"]
+
+https://cloud.google.com/sql/faq#activation_policy
+
+When you create a custom role, you must choose an organization or project to create it in. You can then grant the custom role on the organization or project, as well as any resources within that organization or project.
+You can only grant a custom role within the project or organization in which you created it. You cannot grant custom roles on other projects or organizations, or on resources within other projects or organizations.
+
+provider "google" {
+  project     = "my-project-id"
+  region      = "us-central1"
+  zone        = "us-central1-c"
+}
+
+
+https://source.cloud.google.com/cloud-professional-services/wellsfargo-app-modernization-foundations/+/main:wf-foundations/3-network/prod-vpc.tf
+
+https://source.cloud.google.com/cloud-professional-services/telushealth-foundations/+/master:vpc-peering/modules/network-peering/variables.tf;bpv=0
+
+Here's a kickoff deck we shared last week:
+https://docs.google.com/presentation/d/1upiH2FaBE9z7DJtLGWuQZ2ALIb6IgABU7GcUGzqrMAQ/edit?resourcekey=0-3bgNYezmRd99Hc7-mAFFcw#slide=id.gd1395da515_0_2
+
+https://docs.google.com/presentation/d/1upiH2FaBE9z7DJtLGWuQZ2ALIb6IgABU7GcUGzqrMAQ/edit?resourcekey=0-3bgNYezmRd99Hc7-mAFFcw#slide=id.gd1395da515_0_2
+
+gcloud compute ssh --zone "us-east4-a" "eomonitoring-ops-agent-poc" --internal-ip --project "prj-l-600001687-poc"
+
+OPS-Policy:
+gcloud beta compute instances \
+    ops-agents policies create ops-agents-policy-safe-rollout \
+    --agent-rules="type=ops-agent,version=current-major,package-state=installed,enable-autoupgrade=true" \
+    --os-types=short-name=debian,version=10 \
+    ;
+    
+ agent_rules:
+- enable_autoupgrade: true
+  package_state: installed
+  type: ops-agent
+  version: 2.*.*
+assignment:
+  group_labels: []
+  instances: []
+  os_types:
+  - short_name: debian
+    version: '10'
+  zones: []
+create_time: '2022-04-18T10:56:43.059122Z'
+description: None
+etag: f4261a9b-60de-4fbb-9d32-150fcdefb9ba
+id: projects/823050513830/guestPolicies/ops-agents-policy-safe-rollout
+update_time: '2022-04-18T10:56:43.059122Z'
+
+gcloud beta compute instances ops-agents policies list
+ID: ops-agents-policy-safe-rollout
+DESCRIPTION: None
+CREATE_TIME: 2022-04-18T10:56:43.059122Z
+UPDATE_TIME: 2022-04-18T10:56:43.059122Z
+
+
+IAM-PRC-LAB
+
+1) CICD
+2) CloudOps Admin
+3) CloudOps poweruser
+
+
+
+compute.restrictAuthenticatedGoogleConnection
+compute.restrictDirectGoogleAccess
+
+
+org_id          = "678233521001"
+billing_account = "011D0C-1A8549-C0EFB4"  011D0C-1A8549-C0EFB4
+
+
+terraform {
+  required_version = ">=0.15.0"
+  backend "gcs" {
+    bucket = "amex-tf-state"
+    prefix = "terraform/state/0.15/RMN"
+    }
+}
+
+
+terraform {
+  required_version = ">=0.15.0"
+  backend "gcs" {
+    bucket = "amex-tf-state"
+    prefix = "terraform/state/0.15/IAM"
+    }
+}
+
+file("${path.module}/examples/startup_script.sh")
+#!/bin/bash
+
+cat <<EOF > /var/www/html/index.nginx-debian.html
+<html>
+<body>
+<h1>Hello from $(curl  -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/name")</h1>
+</body>
+</html>
+
+IAM-PRC-ORG
+
+1) Crypto poweruser
+
+terraform { backend "remote" { hostname = "tfe.aexp.com" organization = "aexp" workspaces { name = "gi-e0-gcp-nw-600001717-01" } } }
+
+Every subnet has four reserved IP addresses in its primary IP range. There are no reserved IP addresses in the secondary IP ranges. Reserved IP address Description Example 
+Network First address in the primary IP range for the subnet 10.1.2.0 in 10.1.2.0/24 Default gateway 
+
+Second address in the primary IP range for the subnet 10.1.2.1 in 10.1.2.0/24
+
+Second-to-last address Second-to-last address in the primary IP range for the subnet that is reserved by Google Cloud for potential future use 10.1.2.254 in 10.1.2.0/24 Broadcast Last address in the primary IP range for the subnet 10.1.2.255 in 10.1.2.0/24
+
+
+Variables
+To control module's behavior, change variables' values regarding the following:
+
+constraint: set this variable with the constraint value in the form constraints/{constraint identifier}. For example, constraints/serviceuser.services
+
+policy_type: Specify either boolean for boolean policies or list for list policies. (default list)
+
+Policy Root: set one of the following values to determine where the policy is applied:
+organization_id
+project_id
+folder_id
+
+exclude_folders: a list of folder IDs to be excluded from this policy. These folders must be lower in the hierarchy than the policy root.
+exclude_projects: a list of project IDs to be excluded from this policy. They must be lower in the hierarchy than the policy root.
+Boolean policies (with policy_type: "boolean") can set the following variables:
+enforce: if true or null then the policy is enforced at the root; if false then policy is not enforced at the root. (default null)
+List policies (with policy_type: "list") can set one of the following variables. Only one may be set.
+enforce: if true or null then policy will deny all; if false then policy will allow all (default null)
+allow: list of values to include in the policy with ALLOW behavior. Set enforce to null to use it.
+deny: list of values to include in the policy with DENY behavior. Set enforce to null to use it.
+List policies with allow or deny values require the length to be set (a workaround for this terraform issue)
+allow_list_length
+deny_list_length
+
+
+
+Understanding constraints 
+A constraint is a type of restriction against a Google Cloud service or a list of Google Cloud services. Think of the constraint as a blueprint that defines what behaviors are controlled. This blueprint is then applied to a resource hierarchy node as an organization policy, which implements the rules defined in the constraint. The Google Cloud service mapped to that constraint and associated with that resource hierarchy node will then enforce the restrictions configured within the organization policy.
+
+A constraint has a type, which determines the organization policy values that can be entered and used for checking enforcement. The enforcing Google Cloud service will evaluate the constraint type and value to determine restriction. For more information, see Organization policy contraints.
+
+
+# Copyright 2021 Google LLC. This software is provided as-is, without warranty or representation for any use or purpose. Your use of it is subject to your agreement with Google.
+
+org_id     = ""       
+project_id = ""          # provide PO project id
+root_folder_id  = ""     # provide GI folder id
+eng_folder_id  = ""      # provide eng(e0) folder id
+dev_folder_id = ""       # provide dev(e1) folder id
+
+
+cicd-poweruser-binding-members                           = ["group:PRC-AXP-PU-E3-AppAdmin-GCP-CICD@amex.com"]
+cloudops-poweruser-binding-members                       = ["group:PRC-AXP-PU-E3-AppAdmin-GCP-Dev-Ops@amex.com"]
+cloudops-admin-project-level-binding-members             = ["group:PRC-AXP-PU-E3-AppAdmin-GCP-Dev-Ops@amex.com"]
+cloudeng-poweruser-binding-members                       = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-CF@amex.com"]
+cloudeng-admin-binding-members                           = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-CF@amex.com"]
+product-poweruser-binding-members                        = ["group:PRC-AXP-PU-E3-AppSupp-GCP-CE-Product@amex.com"]
+cloudqe-poweruser-binding-members                        = ["group:PRC-AXP-PU-E3-AppAdmin-GCP-TEST-Eng@amex.com"]
+cloudsolutions-poweruser-binding-members                 = ["group:PRC-AXP-PU-E3-AppAdmin-GCP-Dev-Eng@amex.com"]
+network-poweruser-binding-members                        = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-DCE@amex.com", "group:PRC-AXP-BA-E3-AppAdmin-GCP-GNOC@amex.com"]
+network-admin-project-level-binding-members              = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-DCE@amex.com", "group:PRC-AXP-BA-E3-AppAdmin-GCP-GNOC@amex.com"]
+billing-poweruser-binding-members                        = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-Billing@amex.com"]
+billing-admin-project-level-binding-members              = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-Billing@amex.com"]
+ddi-poweruser-binding-members                            = ["group:PRC-AXP-AA-E3-AppAdmin-GCP-DDI@amex.com"]
+ddi-admin-project-level-binding-members                  = ["group:PRC-AXP-AA-E3-AppAdmin-GCP-DDI@amex.com"]
+crypto-poweruser-members                                 = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-Crypto@amex.com"]
+crypto-admin-project-level-binding-members               = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-Crypto@amex.com"]
+ir-poweruser-binding-members                             = ["group:PRC-AXP-BA-E3-AppAdmin-GCPInfosecMonitoring@amex.com"]
+ir-admin-project-level-binding-members                   = ["group:PRC-AXP-BA-E3-AppAdmin-GCPInfosecMonitoring@amex.com"]
+siem-poweruser-binding-members                           = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-SIEM@amex.com"]
+siem-admin-project-level-binding-members                 = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-SIEM@amex.com"]
+network-security-eng-poweruser-binding                   = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-NetSec@amex.com", "group:PRC-AXP-BA-E3-AppAdmin-GCPNetSecOps@amex.com"]
+network-security-eng-admin-project-level-binding-members = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-NetSec@amex.com", "group:PRC-AXP-BA-E3-AppAdmin-GCPNetSecOps@amex.com"]
+iam-poweruser-binding-members                            = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-IAM@amex.com"]
+iam-admin-project-level-binding-members                  = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-IAM@amex.com"]
+infosec-audit-binding-members                            = ["group:PRC-AXP-AAE3-Compl-SecGCPInfosecAudit@amex.com"]
+cloud-security-poweruser-binding-members                 = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-CloudSec@amex.com"]
+cloud-security-admin-project-level-binding-members       = ["group:PRC-AXP-BA-E3-AppAdmin-GCP-CloudSec@amex.com"]
+bigdata-admin-project-level-binding-members              = [""]   # provide member group name
+bigdata-developer-project-level-binding-members          = [""]   # provide member group name
+
+
+
+source_ranges - (Optional) A list of source CIDR ranges that this firewall applies to. Can't be used for EGRESS.
+
+source_tags - (Optional) A list of source tags for this firewall. Can't be used for EGRESS.
+
+target_tags - (Optional) A list of target tags for this firewall.
+
+direction - (Optional) Direction of traffic to which this firewall applies; One of INGRESS or EGRESS. Defaults to INGRESS.
+
+destination_ranges - (Optional) A list of destination CIDR ranges that this firewall applies to. Can't be used for INGRESS.
+
+source_service_accounts - (Optional) A list of service accounts such that the firewall will apply only to traffic originating from an instance with a service account in this list. Note that as of May 2018, this list can contain only one item, due to a change in the way that these firewall rules are handled. Source service accounts cannot be used to control traffic to an instance's external IP address because service accounts are associated with an instance, not an IP address. source_ranges can be set at the same time as source_service_accounts. If both are set, the firewall will apply to traffic that has source IP address within source_ranges OR the source IP belongs to an instance with service account listed in source_service_accounts. The connection does not need to match both properties for the firewall to apply. source_service_accounts cannot be used at the same time as source_tags or target_tags.
+
+target_service_accounts - (Optional) A list of service accounts indicating sets of instances located in the network that may make network connections as specified in allow. target_service_accounts cannot be used at the same time as source_tags or target_tags. If neither target_service_accounts nor target_tags are specified, the firewall rule applies to all instances on the specified network. Note that as of May 2018, this list can contain only one item, due to a change in the way that these firewall rules are handled.
+
+
+# Getting Started with vpc modules
+
+- Creating customized vpc using CFT module
+
+- arguments passing to create subnets 
+
+ - project_id : passing shared network project id
+
+ - network_name : paasing shared network name 
+
+ - auto_create_subnetworks : network is created in 'auto subnet mode' and it will create a subnet for each region automatically
+
+ - routing_mode :  network routing mode (default 'GLOBAL')
+
+ - delete_default_internet_gateway_routes : passing boolean object for delete_default_internet_gateway_routes
+
+ - mtu : mtu must be a value between 1460 and 1500 inclusive
+ 
+ - shared_vpc_host : passing boolean object for shared vpc host
+
+
+Example : Creating vpc module
+
+```hcl
+module "vpc" {
+  source                                 = "terraform-google-modules/network/google//modules/vpc"
+  project_id                             = var.npproject_id
+  #project_id                            = local.npproject_id
+  network_name                           = var.vpc_name
+  auto_create_subnetworks                = var.auto_create_subnetworks
+  routing_mode                           = var.routing_mode
+  description                            = var.description
+  delete_default_internet_gateway_routes = var.delete_default_internet_gw
+  mtu                                    = var.mtu
+  shared_vpc_host                        = var.shared_vpc_host
+
+}
+```
+network folder
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| network\_name | The name of the VPC being created |
+| project\_id | VPC project id |
+| route\_names | The route names associated with this VPC |
+| route\_priority | The route priority associated with this VPC | 
+| route\_dest_ip | The route dest_ip associated with this VPC |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+
+folders.tf:
+
+module "third_level_folder_eng_network" {
+  source = "../../modules/folder/"
+
+  folder_params = var.third_level_folder_params_eng
+  parent        = module.second_level_folder_eng.folders_map.fldr-l-network.id /*(don't change as parent name is static)*/
+
+}
+
+module "third_level_folder_eng_infosec" {
+  source = "../../modules/folder/"
+
+  folder_params = var.third_level_folder_params_eng
+  parent        = module.second_level_folder_eng.folders_map.fldr-l-infosec.id /*(don't change as parent name is static)*/
+
+}
+
+input.tfvars:
+
+second_level_folder_params_eng = [
+
+  /* description should not be empty*/
+  {
+    environment = "l"
+    description = "logging"
+  },
+  {
+    environment = "l"
+    description = "network"
+  },
+  {
+    environment = "l"
+    description = "infosec"
+  }
+]
+
+/*#############################
+  Eng Project creation variables
+*/ #############################
+
+poc-proj-params-eng = {
+
+  description          = "poc"
+  environment          = "l"
+  business_code_number = "600001687"
+  unique_id            = ""
+
+}
+
+poc-proj-params-eng-logging = {
+
+  description          = "logging"
+  environment          = "l"
+  business_code_number = "600001687"
+  unique_id            = ""
+
+}
+
+poc-proj-params-eng-network-nw001 = {
+
+  description          = "network"
+  environment          = "l"
+  business_code_number = "600001687"
+  unique_id            = "nw001"
+
+}
+
+poc-proj-params-eng-network-nw002 = {
+
+  description          = "network"
+  environment          = "l"
+  business_code_number = "600001687"
+  unique_id            = "nw002"
+
+}
+
+poc-proj-params-eng-infosec-ads = {
+
+  description          = "infosec"
+  environment          = "l"
+  business_code_number = "600001687"
+  unique_id            = "ads"
+
+}
+
+poc-proj-params-eng-infosec-iam = {
+
+  description          = "infosec"
+  environment          = "l"
+  business_code_number = "600001687"
+  unique_id            = "iam"
+
+}
+
+output.tf::
+
+/* Eng Projects IDs */
+output "eng-poc-project" {
+  description = "Project ID"
+  value       = module.Eng-poc-project.project_id
+}
+
+output "eng-logging-project" {
+  description = "Project ID"
+  value       = module.Eng-poc-project-logging.project_id
+}
+
+output "eng-poc-project-network-nw001" { 
+  description = "Project ID"
+  value       = module.Eng-poc-project-network-nw001.project_id
+}
+
+output "eng-poc-project-network-nw002" {
+  description = "Project ID"
+  value       = module.Eng-poc-project-network-nw002.project_id
+}
+
+output "eng-poc-project-infosec-ads" {
+  description = "Project ID"
+  value       = module.Eng-poc-project-infosec-ads.project_id
+}
+
+output "eng-poc-project-infosec-iam" {
+  description = "Project ID"
+  value       = module.Eng-poc-project-infosec-iam.project_id
+}
+
+
+output "eng-poc-project-network-nw001" { 
+  description = "Project ID"
+  value       = module.Eng-poc-project-network-nw001.project_number
+}
+
+output "eng-poc-project-network-nw002" {
+  description = "Project ID"
+  value       = module.Eng-poc-project-network-nw002.project_number
+}
+
+output "eng-poc-project-infosec-ads" {
+  description = "Project ID"
+  value       = module.Eng-poc-project-infosec-ads.project_number
+}
+
+output "eng-poc-project-infosec-iam" {
+  description = "Project ID"
+  value       = module.Eng-poc-project-infosec-iam.project_number
+}
+
+
+Project.tf::
+
+
+/* Eng Projects
+*/
+
+module "Eng-poc-project" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.first_level_folder.folders_map.fldr-eng.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project
+}
+
+module "Eng-poc-project-logging" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng-logging
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.second_level_folder_eng.folders_map.fldr-l-logging.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project-logging
+}
+
+/*
+module "Eng-poc-project-network" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng-network
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.second_level_folder_eng.folders_map.fldr-l-network.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project-network
+}
+
+module "Eng-poc-project-infosec" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng-infosec
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.second_level_folder_eng.folders_map.fldr-l-infosec.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project-infosec
+}
+*/
+
+module "Eng-poc-project-network-nw001" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng-network-nw001
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.second_level_folder_eng.folders_map.fldr-l-network.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project-network-nw001
+}
+
+module "Eng-poc-project-network-nw002" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng-network-nw002
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.second_level_folder_eng.folders_map.fldr-l-network.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project-network-nw002
+}
+
+module "Eng-poc-project-infosec-ads" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng-infosec-ads
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.second_level_folder_eng.folders_map.fldr-l-infosec.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project-infosec-ads
+}
+
+module "Eng-poc-project-infosec-iam" {
+  source          = "../../modules/project/"
+  project_params  = var.poc-proj-params-eng-infosec-iam
+  org_id          = var.org_id // provide the org id here
+  folder_id       = module.second_level_folder_eng.folders_map.fldr-l-infosec.id /*(don't change as parent id is static)*/
+  billing_account = var.billing_account // provide the billing account id here
+  activate_apis   = var.activate_apis_lab
+  labels = var.eng-poc-project-infosec-iam
+}
+
+
+variables.tf::
+
+
+
+
+/*
+Eng project variables
+*/
+
+variable "poc-proj-params-eng" {
+  type = object({
+    environment          = string
+    description          = string
+    business_code_number = string
+    unique_id            = string
+  })
+}
+
+variable "poc-proj-params-eng-logging" {
+  type = object({
+    environment          = string
+    description          = string
+    business_code_number = string
+    unique_id            = string
+  })
+}
+
+variable "poc-proj-params-eng-network-nw001" {
+  type = object({
+    environment          = string
+    description          = string
+    business_code_number = string
+    unique_id            = string
+  })
+}
+
+variable "poc-proj-params-eng-network-nw002" {
+  type = object({
+    environment          = string
+    description          = string
+    business_code_number = string
+    unique_id            = string
+  })
+}
+
+variable "poc-proj-params-eng-infosec-ads" {
+  type = object({
+    environment          = string
+    description          = string
+    business_code_number = string
+    unique_id            = string
+  })
+}
+
+variable "poc-proj-params-eng-infosec-iam" {
+  type = object({
+    environment          = string
+    description          = string
+    business_code_number = string
+    unique_id            = string
+  })
+}
+
+
+
+variable "eng-poc-project" {
+    description = "Project Labels"
+    type = map(string)
+}
+variable "eng-poc-project-logging" {
+    description = "Project Labels"
+    type = map(string)
+}
+variable "eng-poc-project-network-nw001" {
+    description = "Project Labels"
+    type = map(string)
+}
+variable "eng-poc-project-network-nw002" {
+    description = "Project Labels"
+    type = map(string)
+}
+variable "eng-poc-project-infosec-ads" {
+    description = "Project Labels"
+    type = map(string)
+}
+variable "eng-poc-project-infosec-iam" { 
+    description = "Project Labels"
+    type = map(string)
+}
+
+
+
+│ Error: googleapi: Error 403: The caller does not have permission, forbidden
+│
+│   with google_organization_policy.GCS-Detailed-Audit-Logging-Mode,
+│   on org-constrains.tf line 411, in resource "google_organization_policy" "GCS-Detailed-Audit-Logging-Mode":
+│  411: resource "google_organization_policy" "GCS-Detailed-Audit-Logging-Mode" {
+│
+╷
+│ Error: googleapi: Error 403: The caller does not have permission, forbidden
+│
+│   with google_organization_policy.GCS-Retention-policy-duration-in-seconds,
+│   on org-constrains.tf line 420, in resource "google_organization_policy" "GCS-Retention-policy-duration-in-seconds":
+│  420: resource "google_organization_policy" "GCS-Retention-policy-duration-in-seconds" {
+│
+╵
+╷
+│ Error: googleapi: Error 403: The caller does not have permission, forbidden
+│
+│   with google_organization_policy.GCS-Enforce-Uniform-Bucket-Level-Accesse,
+│   on org-constrains.tf line 431, in resource "google_organization_policy" "GCS-Enforce-Uniform-Bucket-Level-Accesse":
+│  431: resource "google_organization_policy" "GCS-Enforce-Uniform-Bucket-Level-Accesse" {
+│
+╵
+╷
+│ Error: googleapi: Error 403: The caller does not have permission, forbidden
+│
+│   with google_organization_policy.Storage-Public-Access-Prevention,
+│   on org-constrains.tf line 440, in resource "google_organization_policy" "Storage-Public-Access-Prevention":
+│  440: resource "google_organization_policy" "Storage-Public-Access-Prevention" {
+│
+╵
+╷
+│ Error: Error creating folder 'fldr-gi' in '678233521001': googleapi: Error 400: Request contains an invalid argument., badRequest
+│
+│   with module.root_level_folder.module.folder.google_folder.folders["fldr-gi"],
+│   on .terraform/modules/root_level_folder.folder/main.tf line 32, in resource "google_folder" "folders":
+│   32: resource "google_folder" "folders" {
+│
+╵
+╷
+│ Error: failed pre-requisites: missing permission on "billingAccounts/011D0C-1A8549-C0EFB4": billing.resourceAssociations.create
+│
+│   with module.root-rootorgvaldn-project.module.project.module.project-factory.google_project.main,
+│   on .terraform/modules/root-rootorgvaldn-project.project/modules/core_project_factory/main.tf line 65, in resource "google_project" "main":
+│   65: resource "google_project" "main" {
+
+
+GCS Permissions:
+================
+
+Bucket permissions:
+==================
+
+Bucket permission name	Description
+
+storage.buckets.create	Create new buckets in a project.
+
+storage.buckets.delete	Delete buckets.
+
+storage.buckets.get	Read bucket metadata, excluding IAM policies, and list or read the Pub/Sub notification configurations on a bucket.
+
+storage.buckets.getIamPolicy	Read bucket IAM policies.
+
+storage.buckets.list	List buckets in a project. Also read bucket metadata, excluding IAM policies, when listing.
+
+storage.buckets.setIamPolicy	Update bucket IAM policies.
+
+storage.buckets.      update	Update bucket metadata, excluding IAM policies, and add or remove a Pub/Sub notification configuration on a bucket.
+
+
+Object permissions:
+==================
+
+Object permission name	Description
+
+storage.objects.create	 Add new objects to a bucket.
+
+storage.objects.delete	Delete objects.
+
+storage.objects.get	Read object data and metadata, excluding ACLs.
+
+storage.objects.getIamPolicy	Read object ACLs, returned as IAM policies.
+
+storage.objects.list	List objects in a bucket. Also read object metadata, excluding ACLs, when listing.
+
+storage.objects.setIamPolicy	Update object ACLs.
+
+storage.objects.update	Update object metadata, excluding ACLs.
+
+HMAC key permissions: (HMAC key permissions apply at the project level only.)
+=====================
+
+HMAC key permission name	Description
+
+storage.hmacKeys.create	Create new HMAC keys for service accounts in a project.
+
+storage.hmacKeys.delete	Delete existing HMAC keys.
+
+storage.hmacKeys.get	Read HMAC key metadata.
+
+storage.hmacKeys.list	List the metadata of HMAC keys in a project.
+
+storage.hmacKeys.update	Update HMAC key status.
+
+Multipart upload permissions:
+=============================
+
+Multipart upload permission name	Description
+
+storage.multipartUploads.create	Upload objects in multiple parts.
+
+storage.multipartUploads.abort	Abort multipart upload sessions.
+
+storage.multipartUploads.listParts	List the uploaded object parts in a multipart upload session.
+
+storage.multipartUploads.list	List the multipart upload sessions in a bucket.
+
+=============================================
+
+  {
+      name                  = "1"
+      zone                  = "us-central1-b"
+      tier                  = "db-n1-standard-1"
+      ip_configuration      = local.read_replica_ip_configuration
+      database_flags        = [{ name = "long_query_time", value = 1 }]
+      disk_autoresize       = null
+      disk_autoresize_limit = null
+      disk_size             = null
+      disk_type             = "PD_HDD"
+      user_labels           = { bar = "baz" }
+      encryption_key_name   = null
+    },
+    {
+      name                  = "2"
+      zone                  = "us-central1-c"
+      tier                  = "db-n1-standard-1"
+      ip_configuration      = local.read_replica_ip_configuration
+      database_flags        = [{ name = "long_query_time", value = 1 }]
+      disk_autoresize       = null
+      disk_autoresize_limit = null
+      disk_size             = null
+      disk_type             = "PD_HDD"
+      user_labels           = { bar = "baz" }
+      encryption_key_name   = null
+    },
+
+
+/*####################################
+  Root level Project creation variables
+*/ ####################################
+
+root-level-proj-params-rootorgvaldn = {
+
+  description          = "rootorgvaldn"
+  environment          = "l"
+
+}
+
+
+
+/*#############################
+  Dev Project creation variables
+*/ #############################
+
+dev-proj-params-project-1-team-a = {
+
+  description          = "dev-project-1-team-a" 
+  environment          = "d"
+
+}
+
+dev-proj-params-project-2-team-a = {
+
+  description          = "dev-project-2-team-a"
+  environment          = "d"
+
+}
+
+prod-proj-params-project-1-team-a = {
+
+  description          = "prod-project-1-team-a"
+  environment          = "p"
+
+}
+
+prod-proj-params-project-2-team-a = {
+
+  description          = "prod-project-2-team-a"
+  environment          = "p"
+
+}
+
+dev-proj-params-project-1-team-b = {
+
+  description          = "dev-project-1-team-b"
+  environment          = "d"
+
+}
+
+dev-proj-params-project-2-team-b = {
+
+  description          = "dev-project-2-team-b"
+  environment          = "d"
+
+}
+
+prod-proj-params-project-1-team-b = {
+
+  description          = "prod-project-1-team-b"
+  environment          = "p"
+
+}
+
+prod-proj-params-project-2-team-b = {
+
+  description          = "prod-project-2-team-b"
+  environment          = "p"
+
+}
+
+==========================================================
+
+/*#############################
+  Folder creation variables
+*/ #############################
+
+root_level_folder_params = [
+
+  /* description should not be empty*/
+
+  {
+    environment = ""
+    description = "formlabs-org"
+  }
+]
+
+first_level_folder_params_team_a = [
+
+  /* description should not be empty*/
+
+
+  {
+    environment = ""
+    description = "dev"
+  },
+  {
+    environment = ""
+    description = "prod"
+  },
+
+
+
+]
+
+first_level_folder_params_team_b = [
+
+  /* description should not be empty*/
+
+
+  {
+    environment = ""
+    description = "dev"
+  },
+  {
+    environment = ""
+    description = "prod"
+  },
+
+
+
+]
+
+second_level_folder_team_a_dev = [
+
+  {
+    environment = "d"
+    description = "dev-project-1"
+  },
+  {
+    environment = "d"
+    description = "dev-project-2"
+  }
+]
+
+second_level_folder_team_a_prod = [
+
+  {
+    environment = "p"
+    description = "prod-project-1"
+  },
+  {
+    environment = "p"
+    description = "prod-project-2"
+  }
+]
+
+second_level_folder_team_b_dev = [
+
+  {
+    environment = "d"
+    description = "dev-project-1"
+  },
+  {
+    environment = "d"
+    description = "dev-project-2"
+  }
+]
+
+second_level_folder_team_b_prod = [
+
+  {
+    environment = "p"
+    description = "prod-project-1"
+  },
+  {
+    environment = "p"
+    description = "prod-project-2"
+  }
+]
+
+==================
+variable "project_id" {
+  type        = string
+  description = "The ID of the project to create resources in"
+}
+
+variable "region" {
+  type        = string
+  description = "The region to use"
+}
+
+variable "main_zone" {
+  type        = string
+  description = "The zone to use as primary"
+}
+
+variable "cluster_node_zones" {
+  type        = list(string)
+  description = "The zones where Kubernetes cluster worker nodes should be located"
+}
+
+# variable "credentials_file_path" {
+#   type = string
+#   description = "The credentials JSON file used to authenticate with GCP"
+# }
+
+variable "service_account" {
+  type        = string
+  description = "The GCP service account"
+}
+
+
+# variable "network_name" {
+#   type        = string
+#   description = "network name"
+# }
+
+# variable "subnet_name" {
+#   type        = string
+#   description = "subnet name"
+# }
+
+# variable "cluster_master_ip_cidr_range" {
+#   type        = string
+#   description = "cluster master ip cidr range"
+# }
+
+# variable "cluster_pods_ip_cidr_range" {
+#   type        = string
+#   description = "cluster pods ip cidr range"
+# }
+
+# variable "cluster_services_ip_cidr_range" {
+#   type        = string
+#   description = "cluster services ip cidr range"
+# }
+
+
+variable "bastion_name" {
+  type        = string
+  description = "bastion name"
+}
+================================
+
+# module "google_dns_record_set" {
+#   source = "../../../../../modules/formlabs.com/dns-factory-new/"
+#   records = local.records
+#   project_id = local.project_id
+#   name = local.name
+#   managed_zone = local.dns_managed_zone.name
+#   type         = local.value.type
+#   rrdatas      = local.value.rrdatas
+# }
+
+# module "address" {
+#   source = "../../../../../modules/formlabs.com/dns-factory-new/"
+#   name     = local.name
+#   project_id = local.project_id
+#   region = local.region
+#   names = local.names
+# }
+
+# module "google_dns_record_set" {
+#   source = "../../../../../modules/formlabs.com/dns-factory-new/"
+#   cnamerecords = local.cnamerecords
+#   project_id = local.project_id
+#   name = local.name
+#   managed_zone = local.dns_managed_zone.name
+#   type           = local.value.type_1
+#   rrdatas        = local.value.rrdatas_1
+#   ttl   = local.value.ttl_1
+# }
+
+
+

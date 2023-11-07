@@ -1,0 +1,430 @@
+sricharank@cs-362155892133-default:~/Kineton$ helm template cronjob-test/
+---
+# Source: cronjob-test/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-cron-runner
+---
+# Source: cronjob-test/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cron-runner
+rules:
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - patch
+  - get
+---
+# Source: cronjob-test/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: release-name-cronjob-test-cron-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: 'release-name-cronjob-test-cron-runner'
+subjects:
+- kind: ServiceAccount
+  name: 'release-name-cronjob-test-sa-cron-runner'
+  namespace: 'default'
+---
+# Source: cronjob-test/templates/scale-down.cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: release-name-cronjob-test-scale-down-job
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch {"spec":{"minReplicas":1}}
+            env:
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: "cluster.local"
+            image: bitnami/kubectl:latest
+            name: scale-down-job
+            resources: {}
+          restartPolicy: OnFailure
+          serviceAccountName: release-name-cronjob-test-sa-cron-runner
+  schedule: "00 14 * * *"
+  successfulJobsHistoryLimit: 0
+---
+# Source: cronjob-test/templates/scale-up-cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: release-name-cronjob-test-scale-up-job
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch {"spec":{"minReplicas":50}}
+            env:
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: "cluster.local"
+            image: bitnami/kubectl:latest
+            name: scale-up-job
+            resources: {}
+          restartPolicy: OnFailure
+          serviceAccountName: release-name-cronjob-test-sa-cron-runner
+  schedule: "15 13 * * *"
+  successfulJobsHistoryLimit: 0
+sricharank@cs-362155892133-default:~/Kineton$ 
+
+
+===============================
+  env:
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: {{ quote .Values.kubernetesClusterDomain }}
+              
+              
+===================================================================
+
+sricharank@cs-362155892133-default:~/Kineton/kineton-cronjob$ helm template cronjob-test/
+---
+# Source: cronjob-test/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-cron-runner
+---
+# Source: cronjob-test/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cron-runner
+rules:
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - patch
+  - get
+---
+# Source: cronjob-test/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cron-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cron-runner
+subjects:
+- kind: ServiceAccount
+  name: sa-cron-runner
+---
+# Source: cronjob-test/templates/scale-down.cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-down-job 
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch {"spec":{"minReplicas":1}}
+            image: bitnami/kubectl:latest
+            name: scale-down-job
+            resources: {}
+          restartPolicy: OnFailure
+          serviceAccountName: sa-cron-runner
+  schedule: "00 14 * * *"
+  successfulJobsHistoryLimit: 0
+---
+# Source: cronjob-test/templates/scale-up-cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-up-job
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch {"spec":{"minReplicas":50}}
+            image: bitnami/kubectl:latest
+            name: scale-up-job
+            resources: {}
+          restartPolicy: OnFailure
+          serviceAccountName: sa-cron-runner
+  schedule: "15 13 * * *"
+  successfulJobsHistoryLimit: 0
+sricharank@cs-362155892133-default:~/Kineton/kineton-cronjob$ 
+
+
+
+=============================
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cron-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cron-runner
+subjects:
+- kind: ServiceAccount
+  name: sa-cron-runner
+  
+  
+======================================
+sricharank@cs-362155892133-default:~/Kineton/kineton-cronjob$ helm template cronjob-test/
+---
+# Source: cronjob-test/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-cron-runner
+---
+# Source: cronjob-test/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cron-runner
+rules:
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - patch
+  - get
+---
+# Source: cronjob-test/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cron-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cron-runner
+subjects:
+- kind: ServiceAccount
+  name: sa-cron-runner
+;;;;;;
+# Source: cronjob-test/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cron-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cron-runner
+subjects:
+- kind: ServiceAccount
+  name: sa-cron-runner
+  
+---
+# Source: cronjob-test/templates/scale-down.cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-down-job 
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch {"spec":{"minReplicas":1}}
+            image: europe-west8-docker.pkg.dev/km1-runcloud/charan-nginx/new-nginx:v2:latest
+            name: scale-down-job
+            resources: {}
+          restartPolicy: OnFailure
+          serviceAccountName: sa-cron-runner
+  schedule: "30 20 * * *"
+  successfulJobsHistoryLimit: 0
+---
+# Source: cronjob-test/templates/scale-up-cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-up-job
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch {"spec":{"minReplicas":50}}
+            image: europe-west8-docker.pkg.dev/km1-runcloud/charan-nginx/new-nginx:v2:latest
+            name: scale-up-job
+            resources: {}
+          restartPolicy: OnFailure
+          serviceAccountName: sa-cron-runner
+  schedule: "32 20 * * *"
+  successfulJobsHistoryLimit: 0
+sricharank@cs-362155892133-default:~/Kineton/kineton-cronjob$   
+
+
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-server-service
+  labels:
+    tier: networking
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx-server
+  type: ClusterIP
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: curljob
+spec:
+  jobTemplate:
+    metadata:
+      name: curljob
+    spec:
+      template:
+        metadata:
+        spec:
+          containers:
+          - command:
+            - curl
+            - http://nginx-server-service.default.svc/customdir/index.html
+            image: curlimages/curl
+            imagePullPolicy: Always
+            name: curljobt
+          restartPolicy: OnFailure
+  schedule: '*/1 * * * *'
+  
+  
+  
+  ===================
+  kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cron-runner
+rules:
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - patch
+  - get
+  
+  ========
+  kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cron-runner
+rules:
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - patch
+  - get
+  
+  
+  
+  ------------------------
+  # Source: cronjob-test/templates/scale-down.cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-down-job 
+spec:
+  schedule: "40 2 * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: sa-cron-runner
+          containers:
+          - name: scale-down-job
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch '{"spec":{"minReplicas":1}}'
+          restartPolicy: OnFailure
+---
+# Source: cronjob-test/templates/scale-up-cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-up-job
+spec:
+  schedule: "35 2 * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: sa-cron-runner
+          containers:
+          - name: scale-up-job
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/sh
+            - -c
+            - kubectl patch hpa kamp --patch '{"spec":{"minReplicas":50}}'
+          restartPolicy: OnFailure
+sricharank@cs-362155892133-default:~/Kineton/kineton-cronjob$ 

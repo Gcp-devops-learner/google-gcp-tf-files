@@ -1,0 +1,32 @@
+  curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.13 > asmcli
+  
+$ chmod +x asmcli
+
+$ ./asmcli create-mesh km1-runcloud \
+  km1-runcloud/us-west1/km1-runcloud-cluster1 \
+  km1-runcloud/us-east1/km1-runcloud-cluster2
+ 
+ 
+ export PROJECT_ID=km1-runcloud
+
+gcloud container clusters get-credentials km1-runcloud-cluster1 --region us-west1 --project km1-runcloud
+
+gcloud container clusters get-credentials km1-runcloud-cluster2 --region us-east1 --project km1-runcloud
+
+kubectl apply -k manifests/ --context=gke_km1-runcloud_us-west1_km1-runcloud-cluster1
+
+kubectl apply -k manifests/app/ --context=gke_km1-runcloud_us-east1_km1-runcloud-cluster2
+
+kubectl get pods -n helloworld --context=gke_km1-runcloud_us-west1_km1-runcloud-cluster1
+
+kubectl get deploy -n asm-gateways --context=gke_km1-runcloud_us-west1_km1-runcloud-cluster1
+
+kubectl get svc -n asm-gateways --context=gke_km1-runcloud_us-west1_km1-runcloud-cluster1
+
+curl 34.82.176.83/hello  
+
+kubectl get pods -n helloworld --context=gke_km1-runcloud_us-east1_km1-runcloud-cluster2
+
+kubectl get deploy -n asm-gateways --context=gke_km1-runcloud_us-east1_km1-runcloud-cluster2
+
+kubectl get svc -n asm-gateways --context=gke_km1-runcloud_us-east1_km1-runcloud-cluster2

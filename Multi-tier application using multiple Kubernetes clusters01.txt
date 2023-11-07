@@ -1,0 +1,295 @@
+1) Provision a GCP network.
+
+gcloud compute --project=km1-runcloud \
+networks create gcp-network --subnet-mode=custom
+
+
+2) Provision a GCP subnet with primary and secondary cidr range for frontend GKE cluster. 
+
+gcloud compute --project=km1-runcloud \
+networks subnets create gke-frontend-subnet-01 \
+--network=gcp-network \
+--region=us-central1 --range=10.127.0.0/22 \
+--secondary-range=gke-frontend-pod-address-range-01=10.1.0.0/16,gke-frontend-service-address-range-01=10.2.0.0/21 \
+--enable-private-ip-google-access
+
+3) Provision a GCP subnet with primary and secondary cidr range for backend GKE cluster. 
+
+gcloud compute --project=km1-runcloud  \
+networks subnets create gke-backend-subnet-02 \
+--network=gcp-network \
+--region=us-east1 --range=10.130.0.0/22 \
+--secondary-range=gke-backend-pod-address-range-02=10.5.0.0/16,gke-backend-service-address-range-02=10.16.0.0/21 \
+--enable-private-ip-google-access
+
+4) GKE clusters
+Provision a GKE cluster for frontend application.
+
+gcloud container --project "km1-runcloud" \
+clusters create "gke-frontend-cluster" \
+--region "us-central1" \
+--no-enable-basic-auth \
+--cluster-version "1.25.8-gke.500"  \
+--machine-type "n2-standard-2" \
+--image-type "COS_CONTAINERD" \
+--disk-type "pd-standard" --disk-size "30" \
+--node-labels group="test-node",name="gke-cluster-01" \
+--metadata disable-legacy-endpoints=true \
+--scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
+--num-nodes "4" \
+--enable-stackdriver-kubernetes \
+--enable-ip-alias \
+--network "projects/km1-runcloud/global/networks/gcp-network" \
+--subnetwork "projects/km1-runcloud/regions/us-central1/subnetworks/gke-frontend-subnet-01" \
+--cluster-secondary-range-name "gke-frontend-pod-address-range-01" \
+--services-secondary-range-name "gke-frontend-service-address-range-01" \
+--default-max-pods-per-node "110" \
+--enable-master-authorized-networks --master-authorized-networks "10.120.0.0/28" \
+--addons HorizontalPodAutoscaling,HttpLoadBalancing \
+--enable-autoupgrade \
+--enable-autorepair \
+--labels group="test-group-01",name="gke-frontend-cluster"
+
+
+
+5) Provision a GKE cluster for backend application.
+
+gcloud container --project "km1-runcloud" \
+clusters create "gke-backend-cluster" \
+--region "us-east1" \
+--no-enable-basic-auth \
+--cluster-version "1.25.8-gke.500"  \
+--machine-type "n2-standard-2" \
+--image-type "COS_CONTAINERD" \
+--disk-type "pd-standard" --disk-size "30" \
+--node-labels group="test-node-02",name="gke-backend-cluster"  \
+--metadata disable-legacy-endpoints=true \
+--scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
+--num-nodes "4" \
+--enable-stackdriver-kubernetes \
+--enable-ip-alias \
+--network "projects/km1-runcloud/global/networks/gcp-network" \
+--subnetwork "projects/km1-runcloud/regions/us-east1/subnetworks/gke-backend-subnet-02" \
+--cluster-secondary-range-name "gke-backend-pod-address-range-02" \
+--services-secondary-range-name "gke-backend-service-address-range-02" \
+--default-max-pods-per-node "110" \
+--enable-master-authorized-networks --master-authorized-networks "10.0.88.0/28" \
+--addons HorizontalPodAutoscaling,HttpLoadBalancing \
+--enable-autoupgrade \
+--enable-autorepair \
+--labels group="test-group-02",name="gke-backend-cluster"
+=================================================================================================================
+gcloud beta container --project "km1-runcloud" clusters create "quizapp-cluster-2" --region "asia-south1" --no-enable-basic-auth --cluster-version "1.25.8-gke.500" --release-channel "regular" --machine-type "e2-medium" --image-type "COS_CONTAINERD" --disk-type "pd-balanced" --disk-size "30" --metadata disable-legacy-endpoints=true --scopes "https://www.googleapis.com/auth/cloud-platform" --num-nodes "3" --logging=SYSTEM,WORKLOAD --monitoring=SYSTEM --enable-ip-alias --network "projects/km1-runcloud/global/networks/voting-app-network" --subnetwork "projects/km1-runcloud/regions/us-central1/subnetworks/voting-subnet" --no-enable-intra-node-visibility --default-max-pods-per-node "110" --no-enable-master-authorized-networks --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver --enable-autoupgrade --enable-autorepair --max-surge-upgrade 1 --max-unavailable-upgrade 0 --enable-shielded-nodes
+===============================================================================================
+step 6) Create a simple flask application, Create a app.py for the frontend application.
+
+vi app.py
+
+======================Start===================================
+
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+__author__ = "sricharank"
+
+import time
+import redis
+from flask import Flask
+import os
+
+app = Flask(__name__)
+cache = redis.Redis(host=os.getenv('REDIS_SERVER'), port=6379)
+
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
+
+
+@app.route('/')
+def hit():
+    count = get_hit_count()
+    return 'Hello, you have %i visitors on this page' % int(count)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True)
+
+
+==============END==========================================================
+
+=>Create a python requirements file as requirements.txt with below libraries.
+
+vi requirements.txt
+========================
+flask
+redis
+========================
+
+    sudo apt update
+    sudo apt install python3
+    sudo apt install python3-pip
+    sudo pip install redis
+    
+    ==> python3 app.py
+    
+    
+Step 7) Create a Docker image.
+=> Create a Dockerfile
+
+vi Dockerfile
+
+========================
+FROM python:2-alpine
+MAINTAINER sricharank
+
+WORKDIR /usr/src/app
+
+COPY ./requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./app.py .
+=====================================
+
+=> docker build . -t myalpine:v1
+
+docker tag myalpine:v1 gcr.io/km1-runcloud/myalpine:v1
+
+docker push gcr.io/km1-runcloud/myalpine:v1
+===============================================
+
+docker tag helloworld-app-img:v1 gcr.io/km1-runcloud/helloworld-app-img:v1
+
+docker push gcr.io/km1-runcloud/helloworld-app-img:v1
+
+docker build . -t helloworld-app-img:latest
+
+docker run -d -p 5000:8080 --name helloworld-container helloworld-app-img
+
+gcloud artifacts repositories create myalpine \
+    --project=km1-runcloud \
+    --repository-format=docker \
+    --location=us-east1 \
+    --description="Docker repository"
+    
+    
+   gcloud builds submit \
+  --tag us-east1-docker.pkg.dev/km1-runcloud/myalpine/gke-backend-cluster .
+  
+  Image Path: IMAGES: us-east1-docker.pkg.dev/km1-runcloud/myalpine/gke-backend-cluster
+ =============================================================================================== 
+
+step 8) Update the frontend application manifest.
+
+vi frontend.yml
+
+====================start==============
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: gcr.io/km1-runcloud/myalpine@sha256:b8ea82508a3c033bced6e2711901a848e66f586199bac29ac452e0df364d29b5
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_APP
+          value: "app.py"
+        - name: REDIS_SERVER
+          value: "10.130.0.26:6379"
+        command: ["sh"]
+        args: ["-c","flask run --host=0.0.0.0"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-public
+  namespace: frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 5000
+  selector:
+      app: frontend
+====================================end================================================================
+
+=> Kubectl create -f frontend.yml
+
+
+$ kubectl apply -f external-ingress-basic.yaml
+=================================================
+kubectl apply -f frontend.yaml
+
+kubectl get deploy frontend-deployment-2 -n frontend
+
+kubectl describe ingress foo-external-2 -n frontend
+
+curl -H "host: foo.example.com" 34.95.84.159
+curl -H "host: foo.example.com" 34.95.84.159
+
+
+# locals {
+#   service_project_1 = {
+#     project_id = "service-project1-367504"
+#     gke_service_account = "gke"
+#     cloud_services_service_account = "cloudsvc"
+#   }
+#   service_project_2 = {
+#     project_id = "baljeetsce1"
+#   }
+# }
+
+# module "vpc-host" {
+#   source     = "./modules"
+#   project_id = "km1-runcloud"
+# #   name       = "my-host-network"
+#   shared_vpc_host = true
+#   shared_vpc_service_projects = [
+#     local.service_project_1.project_id,
+#     local.service_project_2.project_id
+#   ]
+#   subnet_iam = {
+#     "europe-west1/subnet-1" = {
+#       "roles/compute.networkUser" = [
+#         local.service_project_1.cloud_services_service_account,
+#         local.service_project_1.gke_service_account
+#       ]
+#       "roles/compute.securityAdmin" = [
+#         local.service_project_1.gke_service_account
+#       ]
+#     }
+#   }
+# }
+
+    
+    
+    
+
+

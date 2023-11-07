@@ -1,0 +1,44 @@
+https://cloud.google.com/iam/docs/configuring-workforce-identity-federation#saml
+
+https://console.cloud.google.com/cloud-setup
+
+
+# module "vpc" {
+#   source                                 = "terraform-google-modules/network/google//modules/vpc"
+#   project_id                             = var.project_id
+#   network_name                           = var.network_name
+#   auto_create_subnetworks                = var.auto_create_subnetworks
+#   routing_mode                           = var.routing_mode
+#   description                            = var.description
+#   delete_default_internet_gateway_routes = var.delete_default_internet_gw
+#   mtu                                    = var.mtu
+#   shared_vpc_host                        = var.shared_vpc_host
+
+# }
+
+# module "subnet" {
+#   source = "terraform-google-modules/network/google//modules/subnets"
+#   depends_on = [module.vpc]
+#   project_id   = var.project_id
+#   network_name = var.network_name
+#   subnets = [
+
+#     for s in var.subnets : {
+#       subnet_name           = s.subnet_name
+#       subnet_ip             = s.subnet_ip
+#       subnet_region         = s.subnet_region
+#       secondary_ip_range = [
+#     for i in range(
+#       length(
+#         contains(
+#         keys(var.secondary_ranges), each.value.subnet_name) == true
+#         ? var.secondary_ranges[each.value.subnet_name]
+#         : []
+#     )) :
+#     var.secondary_ranges[each.value.subnet_name][i]
+#   ]
+#       subnet_private_access = "true"
+#       subnet_flow_logs      = "false"
+#     }
+#   ]
+# }

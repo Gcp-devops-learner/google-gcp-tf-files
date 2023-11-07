@@ -1,0 +1,29 @@
+https://github.com/nodesource/distributions
+
+Installation instructions
+
+Node.js v20.x:
+
+Using Ubuntu :
+
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&\
+sudo apt-get install -y nodejs
+
+Using Debian, as root :
+
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
+apt-get install -y nodejs
+
+npm install –g create-react-app
+
+npx create-react-app hello-world-example
+
+npx create-react-app hello-world-example
+
+npm init react-app hello-world
+
+cd hello-world-example
+
+npm start
+
+http://localhost:3000

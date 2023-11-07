@@ -1,0 +1,131 @@
+module "vpn_ha-1" {
+  source            = "terraform-google-modules/vpn/google//modules/vpn_ha"
+  version           = "~> 1.3.0"
+  project_id        = "<PROJECT_ID>"
+  region            = "europe-west4"
+  network           = "https://www.googleapis.com/compute/v1/projects/<PROJECT_ID>/global/networks/network-1"
+  name              = "net1-to-net-2"
+  peer_gcp_gateway  = module.vpn_ha-2.self_link
+  router_asn        = 64514
+
+  tunnels = {
+    remote-0 = {
+      bgp_peer = {
+        address = "169.254.1.1"
+        asn     = 64513
+      }
+      bgp_peer_options                = null
+      bgp_session_range               = "169.254.1.2/30"
+      ike_version                     = 2
+      vpn_gateway_interface           = 0
+      peer_external_gateway_interface = null
+      shared_secret                   = ""
+    }
+
+    remote-1 = {
+      bgp_peer = {
+        address = "169.254.2.1"
+        asn     = 64513
+      }
+      bgp_peer_options                = null
+      bgp_session_range               = "169.254.2.2/30"
+      ike_version                     = 2
+      vpn_gateway_interface           = 1
+      peer_external_gateway_interface = null
+      shared_secret                   = ""
+    }
+
+  }
+}
+
+module "vpn_ha-2" {
+  source              = "terraform-google-modules/vpn/google//modules/vpn_ha"
+  version             = "~> 1.3.0"
+  project_id          = "<PROJECT_ID>"
+  region              = "europe-west4"
+  network             = "https://www.googleapis.com/compute/v1/projects/<PROJECT_ID>/global/networks/local-network"
+  name                = "net2-to-net1"
+  router_asn          = 64513
+  peer_gcp_gateway    = module.vpn_ha-1.self_link
+
+  tunnels = {
+    remote-0 = {
+      bgp_peer = {
+        address = "169.254.1.2"
+        asn     = 64514
+      }
+      bgp_session_range               = "169.254.1.1/30"
+      ike_version                     = 2
+      vpn_gateway_interface           = 0
+      shared_secret                   = module.vpn_ha-1.random_secret
+    }
+
+    remote-1 = {
+      bgp_peer = {
+        address = "169.254.2.2"
+        asn     = 64514
+      }
+      bgp_session_range               = "169.254.2.1/30"
+      ike_version                     = 2
+      vpn_gateway_interface           = 1
+      shared_secret                   = module.vpn_ha-1.random_secret
+    }
+
+  }
+}
+
+
+
+=======================================
+VPN_NETWORK.TF
+==========================================
+
+ ############################################# 
+ # Create TWO VPC and Subnets in Two Projects 
+ #############################################
+
+resource "google_compute_network" "network1" {
+  name                   = var.network1_name
+  project       = var.project_id
+  routing_mode            = "GLOBAL"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_network" "network2" {
+  name                    = var.network2_name
+  routing_mode            = "GLOBAL"
+  project       = var.project_id_02
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "network1_subnet1" {
+  name          =  var.network1_subnet1_name                #"ha-vpn-subnet-1"
+  project       = var.project_id
+  ip_cidr_range = "10.0.1.0/24"
+  region        = "asia-south1"
+  network       = google_compute_network.network1.id
+}
+
+resource "google_compute_subnetwork" "network1_subnet2" {
+  name          =  var.network1_subnet2_name      #"ha-vpn-subnet-2"
+  project       = var.project_id
+  ip_cidr_range = "10.0.2.0/24"
+  region        = "asia-south2"
+  network       = google_compute_network.network1.id
+}
+
+resource "google_compute_subnetwork" "network2_subnet1" {
+  name          = var.network2_subnet1_name   #"ha-vpn-subnet-3"
+  project       = var.project_id_02
+  ip_cidr_range = "192.168.1.0/24"
+  region        = "asia-south1"
+  network       = google_compute_network.network2.id
+}
+
+resource "google_compute_subnetwork" "network2_subnet2" {
+  name          = var.network2_subnet2_name    #"ha-vpn-subnet-4"
+  project       = var.project_id_02
+  ip_cidr_range = "192.168.2.0/24"
+  region        = "asia-south2"
+  network       = google_compute_network.network2.id
+}

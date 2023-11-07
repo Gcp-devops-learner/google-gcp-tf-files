@@ -1,0 +1,137 @@
+CFT Modules:
+
+1) CFT modules for Folder :
+
+source: https://github.com/terraform-google-modules/terraform-google-folders
+
+2) CFT modules for Project :
+
+source: https://github.com/terraform-google-modules/terraform-google-project-factory
+
+3) CFT modules for IAM Module: 
+
+source: https://github.com/terraform-google-modules/terraform-google-iam/tree/v7.3.0/modules/custom_role_iam
+
+4) CFT Modules for Networking :
+
+ 1) 2.1  nonprod networking
+   a) i) network-nonprod-e0(customer)
+      source: https://github.com/terraform-google-modules/terraform-google-network/tree/v4.0.1/modules/subnets
+      
+    ii)network-nonprod-e0(network)
+      cloud router source: https://github.com/terraform-google-modules/terraform-google-cloud-router
+      vpc network source: https://github.com/terraform-google-modules/terraform-google-network/tree/master/modules/vpc
+      
+      
+    iii) network-nonprod-e0(security)
+      Firewall source: https://github.com/terraform-google-modules/terraform-google-network/tree/v4.0.1/modules/firewall-rules
+      cloud dns source: https://github.com/terraform-google-modules/terraform-google-cloud-dns
+    
+    
+    b) i) network-nonprod-e1(customer)
+       source: https://github.com/terraform-google-modules/terraform-google-network/tree/v4.0.1/modules/subnets
+    
+      ii) network-nonprod1-e1(network)
+      source: https://github.com/terraform-google-modules/terraform-google-cloud-router
+      source: https://github.com/terraform-google-modules/terraform-google-network
+      
+     ii)  network-nonprod1-e1(security)
+      source: https://github.com/terraform-google-modules/terraform-google-network/tree/v4.0.1/modules/firewall-rules
+      
+    c) i) network-nonprod-e2(customer)
+       source: https://github.com/terraform-google-modules/terraform-google-network/tree/v4.0.1/modules/subnets
+       
+       ii) network-nonprod-e2(network)
+       source: https://github.com/terraform-google-modules/terraform-google-cloud-router
+       source: https://github.com/terraform-google-modules/terraform-google-network
+       
+       iii) network-nonprod-e2(security)
+          source: https://registry.terraform.io/modules/terraform-google-modules/network/google/latest/submodules/firewall-rules
+       
+       
+       
+       
+ 2) 2.2 prod networking module
+   i) network-prod-e3(customer)
+    source: https://github.com/terraform-google-modules/terraform-google-network/tree/v4.0.1/modules/subnets
+    
+   ii) network-prod-e3(network)
+      source: https://github.com/terraform-google-modules/terraform-google-cloud-router
+      source: https://github.com/terraform-google-modules/terraform-google-network
+ 
+   
+ 3) 2.3 shared services networking
+     i) shared-services-networking(customer)
+        source: terraform-google-modules/network/google//modules/subnets
+        
+     ii) shared-services-networking(network)
+       source: https://github.com/terraform-google-modules/terraform-google-cloud-router
+       source: https://github.com/terraform-google-modules/terraform-google-network
+       
+     ii) shared-services-networking(security)
+         source: https://github.com/terraform-google-modules/terraform-google-network/tree/v4.0.1/modules/firewall-rules
+     
+ 4) 2.7 network-anonymize 
+   source: https://github.com/terraform-google-modules/terraform-google-network
+   
+   
+   1) Networking :
+   
+   2.1  nonprod networking
+   a) i) network-nonprod-e0(customer)
+      
+      
+    ii)network-nonprod-e0(network)
+      
+      
+    iii) network-nonprod-e0(security)
+     
+    
+    b) i) network-nonprod-e1(customer)
+       
+      ii) network-nonprod1-e1(network)
+      
+     iii)  network-nonprod1-e1(security)
+      
+    c) i) network-nonprod-e2(customer)
+      
+       ii) network-nonprod-e2(network)
+       
+       
+       iii) network-nonprod-e2(security)
+          
+       
+       
+ 2) 2.2 prod networking module
+   i) network-prod-e3(customer)
+ 
+    
+   ii) network-prod-e3(network)
+     
+   
+ 3) 2.3 shared services networking
+     
+     ii) shared-services-networking(network)
+       
+       
+     ii) shared-services-networking(security)
+        
+ 4) 2.7 network-anonymize 
+   
+   
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

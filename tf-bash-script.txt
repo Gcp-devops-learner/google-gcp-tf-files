@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# terraformsh - Bash wrapper around Terraform
+# Copyright (C) 2020-2021 Peter Willis
+
+set -e -u -o pipefail
+[ "${DEBUG:-0}" = "1" ] && set -x       # set DEBUG=1 to enable tracing
+VERSION="0.12"
+
+# ---------------------------------------------------------------------------------------- #
+_usage () {
+    cat <<EOTUSAGE
+    terraformsh v$VERSION
+    Usage: $0 [OPTIONS] [TFVARS] COMMAND [..]
+    
+# ---------------------------------------------------------------------------------------- #
+# ------------------           functions                       --------------------------- #
+
+_cmd_init () {
+    [ "${_already_ran_cmd_init:-0}" = "1" ] && return 0
+    _already_ran_cmd_init=1
+    _final_vars
+    declare -a args=("$@")
+    _runcmd "$TERRAFORM" init "${INIT_ARGS[@]}" "${args[@]}"
+}
+
+_cmd_plan () {
+    _final_vars
+    [ "${NO_DEP_CMDS:-0}" = "0" ] && _cmd_validate
+    declare -a args=("$@")
+    [ $USE_PLANFILE -eq 1 ] && args+=("-out=$TF_PLANFILE")
+    _runcmd "$TERRAFORM" plan "${VARFILE_ARG[@]}" "${PLAN_ARGS[@]}" "${args[@]}"
+}
+_cmd_apply () {
+    _final_vars
+    local errored=0
+    [ "${NO_DEP_CMDS:-0}" = "0" ] && _cmd_init
+    declare -a args=("$@")
+    [ $USE_PLANFILE -eq 1 ] && args+=("$TF_PLANFILE") # Pass plan file after '$@'
+    [ ! -e errored.tfstate ] || errored=1 # Ignore pre-existing errored.tfstate
+    if ! _runcmd "$TERRAFORM" apply "${APPLY_ARGS[@]}" "${args[@]}" ; then
+        if [ "${PUSH_ERRORED_TFSTATE:-1}" -eq 1 ] && [ $errored -eq 0 ] && [ -e errored.tfstate ] ; then
+            echo "$0: Warning: found 'errored.tfstate' after running 'apply'; attempting to push unapplied state file..."
+            if _cmd_state push errored.tfstate ; then
+                rm -f errored.tfstate
+            else
+                _errexit "Error: could not push errored.tfstate!"
+            fi
+        fi
+    else
+        rm -f "$TF_PLANFILE"
+    fi
+}
+_cmd_plan_destroy () {
+    _final_vars
+    [ "${NO_DEP_CMDS:-0}" = "0" ] && _cmd_validate
+    declare -a args=("$@")
+    [ $USE_PLANFILE -eq 1 ] && args+=("-out=$TF_DESTROY_PLANFILE")
+    _runcmd "$TERRAFORM" plan "${VARFILE_ARG[@]}" -destroy "${PLANDESTROY_ARGS[@]}" "${args[@]}"
+}
+_cmd_destroy () {
+    _final_vars
+    [ "${NO_DEP_CMDS:-0}" = "0" ] && _cmd_init
+    declare -a args=("$@")
+    if [ "${USE_PLANFILE:-0}" = "0" ] ; then
+        _runcmd "$TERRAFORM" destroy "${args[@]}" "${DESTROY_ARGS[@]}"
+    else
+        args+=("$TF_DESTROY_PLANFILE") # Pass plan file after '$@'
+        _runcmd "$TERRAFORM" apply "${DESTROY_ARGS[@]}" "${args[@]}" && rm -f "$TF_DESTROY_PLANFILE"
+    fi
+}

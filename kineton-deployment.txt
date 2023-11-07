@@ -1,0 +1,730 @@
+sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ helm template test-helm/
+---
+# Source: kineton-test-helm/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: kineton-test-helm/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+---
+# Source: kineton-test-helm/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kineton-test-helm
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kineton-test-helm
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: release-name-kineton-test-helm
+      securityContext:
+        {}
+      containers:
+        - name: kineton-test-helm
+          securityContext:
+            {}
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1:1.16.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: kineton-test-helm/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: kubernetes-ingress
+spec:
+  rules:
+    - host: "chart-example.local"
+      http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: release-name-kineton-test-helm
+                port:
+                  number: 80
+---
+# Source: kineton-test-helm/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-kineton-test-helm-test-connection"
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-kineton-test-helm:80']
+  restartPolicy: Never
+sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ 
+
+
+========================================
+
+# Source: kineton-test-helm/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: 
+  annotations: 
+spec:
+  rules:
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name:  
+            port:
+              number:
+---
+
+
+=========================================
+
+---
+# Source: kineton-test-helm/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-kineton-test-helm
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: kineton-test-helm/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamp
+  annotations:
+    cloud.google.com/neg: "{\"ingress\": true}"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+---
+# Source: kineton-test-helm/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kineton-test-helm
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kineton-test-helm
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: release-name-kineton-test-helm
+      securityContext:
+        {}
+      containers:
+        - name: kineton-test-helm
+          securityContext:
+            {}
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1:1.16.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+---
+# Source: kineton-test-helm/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kamp
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "kubernetes-ingress"
+spec:
+  rules:
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name:  kamp
+            port:
+              number: 80
+---
+# Source: kineton-test-helm/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-kineton-test-helm-test-connection"
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-kineton-test-helm:80']
+  restartPolicy: Never
+sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ 
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamp
+  annotations:
+    cloud.google.com/neg: "{\"ingress\": true}"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: "kamp"
+    
+    
+    
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-kineton-test-helm-test-connection"
+  labels:
+    helm.sh/chart: kineton-test-helm-0.1.0
+    app.kubernetes.io/name: kineton-test-helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-kineton-test-helm:80']
+  restartPolicy: Never 
+  
+================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "kamp"
+  template:
+    metadata:
+      app: "kamp"
+    spec:
+      containers:
+        - name: kamp
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1:1.16.0"
+          imagePullPolicy: Always
+          resources:
+            requests:
+             cpu: "250m"
+             memory: "200Mi"
+            limits:
+             cpu: "2"  
+             memory: "1600Mi"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+=========================================
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kamp
+spec:
+  minReplicas: 1
+  maxReplicas: 60
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kamp
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80
+    # - type: Resource
+    #   resource:
+    #     name: memory
+    #     targetAverageUtilization:
+---
+=================================
+# Source: kineton-test-helm/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kamp
+spec:
+  minReplicas: 1
+  maxReplicas: 60
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kamp
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+         type: Utilization
+        targetAverageUtilization: 60
+========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamp
+  labels:
+    app: "kamp"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "kamp"
+  template:
+    metadata:
+      labels:
+        app: "kamp"
+    spec:
+      containers:
+        - name: kamp
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1:1.16.0"
+          imagePullPolicy: Always
+          resources:
+            requests:
+             cpu: "250m"
+             memory: "200Mi"
+            limits:
+             cpu: "2"  
+             memory: "1600Mi"
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+=========================================
+Final:
+=======
+
+# Source: kineton-test-helm/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamp
+  annotations:
+    cloud.google.com/neg: "{\"ingress\": true}"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: "kamp"
+---
+# Source: kineton-test-helm/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamp
+  labels:
+    app: "kamp"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "kamp"
+  template:
+    metadata:
+      labels:
+        app: "kamp"
+    spec:
+      containers:
+        - name: kamp
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1:1.16.0"
+          imagePullPolicy: Always
+          resources:
+            requests:
+             cpu: 250m
+             memory: 200Mi
+            limits:
+             cpu: 2 
+             memory: 1600Mi 
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+---
+# Source: kineton-test-helm/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kamp
+spec:
+  minReplicas: 1
+  maxReplicas: 60
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kamp
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+         type: Utilization
+        targetAverageUtilization: 60
+---
+# Source: kineton-test-helm/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kamp
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "kubernetes-ingress"
+spec:
+  rules:
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name:  kamp
+            port:
+              number: 80
+===============================
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamp
+  annotations:
+    cloud.google.com/neg: "{\"ingress\": true}"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: kamp
+---
+# Source: kineton-test-helm/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamp
+  labels:
+    app: "kamp"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "kamp"
+  template:
+    metadata:
+      labels:
+        app: "kamp"
+    spec:
+      containers:
+        - name: kamp
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1:1.16.0"
+          imagePullPolicy: Always
+          resources:
+            requests:
+             cpu: 250m
+             memory: 200Mi
+            limits:
+             cpu: 2 
+             memory: 1600Mi 
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+---
+# Source: kineton-test-helm/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kamp
+spec:
+  minReplicas: 1
+  maxReplicas: 60
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kamp
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+         type: Utilization
+        averageUtilization : 60
+---
+# Source: kineton-test-helm/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kamp
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "kubernetes-ingress"
+spec:
+  rules:
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name:  kamp
+            port:
+              number: 80
+              
+===================================  
+sricharank@cs-362155892133-default:~/Kineton/kineton-helm$ helm template test-helm/
+---
+# Source: kineton-test-helm/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamp
+  annotations:
+    cloud.google.com/neg: "{\"ingress\": true}"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: kamp
+---
+# Source: kineton-test-helm/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamp
+  labels:
+    app: "kamp"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kamp
+  template:
+    metadata:
+      labels:
+        app: kamp
+    spec:
+      containers:
+        - name: kamp
+          image: "europe-west8-docker.pkg.dev/km1-runcloud/charan-nginx/new-nginx:v2"
+          # imagePullPolicy: Always
+          resources:
+            requests:
+             cpu: 250m
+             memory: 200Mi
+            limits:
+             cpu: 2 
+             memory: 1600Mi 
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 120
+            timeoutSeconds: 1
+---
+# Source: kineton-test-helm/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kamp
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1 
+    kind: Deployment
+    name: kamp
+  minReplicas: 1
+  maxReplicas: 60
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+---
+# Source: kineton-test-helm/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kamp
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "kubernetes-ingress"
+spec: 
+  defaultBackend:
+      service:
+        name: kamp
+        port:
+          number: 80
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name:  kamp
+            port:
+              number: 80
+  

@@ -1,0 +1,3 @@
+First lets understand SSH!
+SSH is a network protocol that gives us the ability to access a computer over an unsecured network in a secure way. In addition to this, SSH provides strong password and public key authentication, along with encrypted data for communication between two computers that may be connecting over the internet or otherwise.
+SSH typically runs on port 22.

@@ -1,0 +1,12 @@
+https://cloud.google.com/migrate/virtual-machines/docs/5.0/how-to/enable-services
+
+https://cloud.google.com/iam/docs/conditions-overview
+
+https://cloud.google.com/resource-manager/docs/handle-special-cases
+
+https://cloud.google.com/resource-manager/docs/assign-iam-roles
+
+https://cloud.google.com/kubernetes-engine/docs/how-to/google-groups-rbac
+
+https://cloud.google.com/service-mesh/docs/unified-install/install-anthos-service-mesh-command
+

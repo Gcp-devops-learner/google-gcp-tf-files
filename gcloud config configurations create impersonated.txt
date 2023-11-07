@@ -1,0 +1,234 @@
+gcloud config configurations create impersonated
+
+gcloud config set auth/impersonate_service_account sricharank-km1-runcloud-iam-gs@km1-runcloud.iam.gserviceaccount.com
+
+
+gcloud compute instances create testing-vm-01 \
+    --project=km1-runcloud\
+    --zone=us-central1-c \
+    --machine-type=e2-medium \
+    --network-interface=subnet=default,no-address \
+    --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --service-account=sricharank-km1-runcloud-iam-gs@km1-runcloud.iam.gserviceaccount.com\
+    --scopes=https://www.googleapis.com/auth/cloud-platform \
+    --create-disk=auto-delete=yes,boot=yes,device-name=testing-vm-01,image=projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20230324,mode=rw,size=10,type=projects/km1-runcloud/zones/us-central1-c/diskTypes/pd-balanced \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --labels=ec-src=vm_add-gcloud \
+    --reservation-affinity=any
+    
+    gcloud compute ssh --zone "us-central1-c" "testing-vm-01"  --tunnel-through-iap --project "km1-runcloud"
+    
+    curl -v http://10.128.0.24
+    
+    
+    gcloud container clusters create-auto private-cluster-2 \
+    --region asia-south1 \
+    --enable-master-authorized-networks \
+    --network my-net-2 \
+    --subnetwork my-subnet-2 \
+    --cluster-secondary-range-name my-pods \
+    --services-secondary-range-name my-services \
+    --enable-private-nodes
+    
+    gcloud container clusters create-auto private-cluster-2 \
+    --region us-central1 \
+    --enable-master-authorized-networks \
+    --network my-net-2 \
+    --subnetwork my-subnet-2 \
+    --cluster-secondary-range-name my-pods \
+    --services-secondary-range-name my-services \
+    --enable-private-nodes --region asia-south1
+    
+    
+    gcloud container clusters update private-cluster-2 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks 203.0.113.0/29 --region asia-south1
+    
+=============================================
+gcloud container clusters create-auto private-cluster-1 \
+    --create-subnetwork name=europe-subnet-1 \
+    --enable-master-authorized-networks \
+    --enable-private-nodes --region europe-west8
+    
+gcloud container clusters update private-cluster-1 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks 203.0.113.0/29  --region europe-west8 
+    
+ gcloud compute networks create europe-network-2 \
+    --subnet-mode custom   --region europe-west8 
+    
+ gcloud compute networks subnets create europe-subnet-2 \
+    --network europe-network-2 \
+    --range 192.168.0.0/20 \
+    --secondary-range my-pods=10.4.0.0/14,my-services=10.0.32.0/20 \
+    --enable-private-ip-google-access   --region europe-west8 
+ 
+gcloud container clusters create-auto europe-private-cluster-2 \
+    --region europe-west8 \
+    --enable-master-authorized-networks \
+    --network europe-network-2\
+    --subnetwork europe-subnet-2 \
+    --cluster-secondary-range-name my-pods \
+    --services-secondary-range-name my-services \
+    --enable-private-nodes  
+    
+gcloud container clusters update europe-private-cluster-2 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks 203.0.113.0/29 --region europe-west8
+
+    To do this:
+
+In your Cloud Shell command-line window, use dig to find the external IP address of your Cloud Shell:
+
+
+dig +short myip.opendns.com @resolver1.opendns.com
+
+gcloud container clusters describe private-cluster-1 --format "flattened(masterAuthorizedNetworksConfig.cidrBlocks[])" --region europe-west8
+
+gcloud container clusters update private-cluster-1 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks 104.196.227.62/32,104.196.227.62/32 --region europe-west8
+    
+gcloud container clusters get-credentials private-cluster-1 \
+    --project=km1-runcloud \
+    --internal-ip   --region europe-west8
+    
+kubectl get nodes
+
+==================================================================================================
+    
+    gcloud container clusters update my-autopilot-cluster-1 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks 203.0.113.0/29 --region asia-south1
+    
+    gcloud container clusters update my-autopilot-cluster-2 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks 203.0.113.0/29 --region asia-south1
+    
+    dig +short myip.opendns.com @resolver1.opendns.com
+    
+    gcloud container clusters describe my-autopilot-cluster-1 --format "flattened(masterAuthorizedNetworksConfig.cidrBlocks[])" --region asia-south1
+    
+    gcloud container clusters update my-autopilot-cluster-1 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks 34.127.122.184/32,34.127.12.121/32 --region asia-south1
+    
+    gcloud container clusters get-credentials my-autopilot-cluster-1 \
+    --project=km1-runcloud\
+    --internal-ip --region asia-south1
+    
+    kubectl get nodes
+ ==================================================================================
+ 
+ gcloud services enable artifactregistry.googleapis.com
+ 
+ gcloud beta artifacts repositories create mydocker-art-repo \
+  --repository-format=docker \
+  --location=europe-west8
+  
+  gcloud beta artifacts packages list \
+  --repository=mydocker-art-repo \
+  --location=europe-west8
+  
+  
+  =====================================================================
+  docker tag europe-west8-docker.pkg.dev/km1-runcloud/test-repo/art-demo:v01 europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo:v1
+  
+  kubectl config current-context
+  kubectl logs
+  kubectl get svc
+kubectl get ingress
+  
+  docker push europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art:v1
+  
+  docker tag europe-west8-docker.pkg.dev/km1-runcloud/test-repo/art-demo:v01 europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art:v1
+  
+  docker push europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art:v1
+  
+  docker tag europe-west8-docker.pkg.dev/km1-runcloud/test-repo/art-demo:v01 europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo:v1
+ 1025  docker images
+ 1026  docker push europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo:v1
+ 1027  docker push europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art:v1
+ 1028  docker tag europe-west8-docker.pkg.dev/km1-runcloud/test-repo/art-demo:v01 europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art:v1
+ 1029  docker push europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art:v1
+ 1030  kubectl apply -f deployment.yaml 
+ 
+ kubectl expose deployment hello-server     --type LoadBalancer     --port 80     --target-port 8080
+ 
+ curl -s http://
+ =====================================================================================================
+ kubectl get nodes -o wide
+ 1005  kubectl get nodes -o wide
+ 1006  curl -i http://10.104.158.2:30081
+ 1007  kubectl logs gk3-private-cluster-1-default-pool-90ad6b7f-3z3v
+ 1008  kubectl create deployment hello-server     --image=us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0
+ 1009  kubectl expose deployment hello-server     --type LoadBalancer     --port 80     --target-port 8080
+ 1010  kubectl get pods
+ 1011  kubectl get pods -w
+ 1012  kubectl describe pod hello-server-7b48b76d8-5n8kz 
+ 1013* kubectl 
+ 1014  kubectl get service hello-server
+ 1015  kubectl get deployment 
+ 1016  kubectl get deployment -o yaml > out.yaml
+ 1017  cat out.yaml
+ 1018  kubectl delete deployment hello-server
+ 1019  kubectl create deployment hello-server     --image=europe-west8-docker.pkg.dev/km1-runcloud/test-repo/art-demo02:v2
+ 
+ =============================================================
+ git clone https://github.com/GoogleCloudPlatform/kubernetes-engine-samples
+ 1002  cd kubernetes-engine-samples/hello-app
+ 1003  docker build -t push europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1 .
+ 1004  docker build -t europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1 .
+ 1005  docker images
+ 1006  docker run --rm -p 8080:8080 hello-app:v1
+ 1007  docker push europe-west8-docker.pkg.dev/km1-runcloud/mydocker-art-repo/test-art-demo02:v1
+ 
+ ========================================================================================================
+ https://docs.google.com/spreadsheets/d/1_JP2S-kf7WJve6yq3zishl5uMK2om2fuwShuiyIbNGk/edit#gid=1417536062
+ 
+ https://support.google.com/cloudidentity/answer/7666159#zippy=%2Cwhich-billing-plan-should-i-choose
+ 
+ host project
+module "cmn-vpc-host-prd-cr654-dy277" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 14.2"
+
+  name       = "ng-prj-cmn-vpc-host-prd"
+  project_id = "vpc-host-prd-cr654-dy277"
+  org_id     = var.org_id
+  folder_id  = module.common.id
+
+  billing_account             = var.billing_account
+  enable_shared_vpc_host_project = true
+  auto_create_network = false
+}
+=========================
+module "ng-prj-test-386809" {
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 14.2"
+
+  name       = "ng-prj-test"
+  project_id = "ng-prj-test-386809"
+  org_id     = var.org_id
+  folder_id  = module.envs.ids["Test"]
+
+  billing_account = var.billing_account
+svpc_host_project_id = module.cmn-vpc-host-test-cr654-dy277.project_id
+}
+
+terraform {
+  required_version = ">=0.13"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0.0"
+    }
+  }
+  provider_meta "google" {
+    module_name = "blueprints/terraform/fs-exported/v0.1.0"
+  }
+}
